@@ -216,6 +216,32 @@ button { cursor: pointer; font-family: inherit; }
   100% { background-position: 200% 0; }
 }
 
+@keyframes scanline {
+  0% {
+    top: -5%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    top: 105%;
+    opacity: 0;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(181, 240, 0, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(181, 240, 0, 0.7);
+  }
+}
+
 /* ─────────────────────────────────────────────
    SKELETON LOADING
    ───────────────────────────────────────────── */
