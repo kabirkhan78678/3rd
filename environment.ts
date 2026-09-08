@@ -115,24 +115,28 @@ export const environment: EnvironmentConfig = {
   },
 
   // 🎨 COLOR PALETTE:
+  // 🎨 OPTION 1: AQUA BLUE
   colors: {
-    // ⭐️ BRAND ACCENT — Isko change karte hi poori website ka highlight color change ho jayega!
-    accent: "#b5f000",             // Try: "#00f0ff" (Cyan), "#ff007f" (Pink), "#ff5500" (Orange), "#8b5cf6" (Purple)
-    accentHover: "#9fd800",        // Button hover color
-    accentSecondary: "#ff3b5c",    // Secondary highlight (Sale / Drop tag)
+    accent: "#00c2cb",             // Vibrant Oceanic Aqua Blue
+    accentHover: "#00a3ab",        // Deep Aqua Teal (Hover)
+    accentSecondary: "#ff4d6d",    // Coral Punch (Sale / Badges)
 
-    // Base layout colors
-    primary: "#0a0a0a",            // Primary dark tone
-    secondary: "#1a1a1a",          // Dark charcoal
-    background: "#ffffff",         // Page background (Light mode)
-    surface: "#f5f5f5",            // Cards & drawer background
-    surface2: "#ebebeb",           // Nested cards / panels
-    text: "#0a0a0a",               // Primary text
-    muted: "#6e6e6e",              // Muted secondary text
-    border: "#e0e0e0",             // Card & separator borders
-    success: "#00c96e",            // Success & confirmed status
-    sale: "#ff3b5c",               // Discount & sale badge
+    // Base Layout (Light Mode)
+    primary: "#0a1315",            // Deep Marine Black
+    secondary: "#142226",          // Dark Sea Charcoal
+    background: "#ffffff",         // Pure Crisp White
+    surface: "#f2f8f9",            // Subtle Pale Aqua Mist
+    surface2: "#e4f0f2",           // Soft Aqua Border Surface
+    text: "#0a1315",               // Deep Charcoal Text
+    muted: "#5a7075",              // Muted Marine Slate
+    border: "#dce8ea",             // Clean Soft Hairline Border
+    success: "#00c988",            // Fresh Mint
+    sale: "#ff4d6d",               // Vibrant Coral Sale
   },
+
+
+
+
 };
 
 /**
@@ -175,6 +179,36 @@ export function getCssThemeVariables(colors: ThemeColors = environment.colors): 
 
 // ─── OPTIONAL PRESET PALETTES (Copy-paste any into colors above) ───────────────
 export const COLOR_PRESETS = {
+  AQUA_BLUE: {
+    accent: "#00c2cb",
+    accentHover: "#00a3ab",
+    accentSecondary: "#ff4d6d",
+    primary: "#0a1315",
+    secondary: "#142226",
+    background: "#ffffff",
+    surface: "#f2f8f9",
+    surface2: "#e4f0f2",
+    text: "#0a1315",
+    muted: "#5a7075",
+    border: "#dce8ea",
+    success: "#00c988",
+    sale: "#ff4d6d",
+  },
+  ELECTRIC_CYAN: {
+    accent: "#00e5ff",
+    accentHover: "#00b4cc",
+    accentSecondary: "#ff007f",
+    primary: "#05090d",
+    secondary: "#0f1720",
+    background: "#f8fafc",
+    surface: "#f0f4f8",
+    surface2: "#e2e9f0",
+    text: "#05090d",
+    muted: "#64748b",
+    border: "#e2e8f0",
+    success: "#00e676",
+    sale: "#ff007f",
+  },
   ELECTRIC_LIME: {
     accent: "#b5f000",
     accentHover: "#9fd800",
