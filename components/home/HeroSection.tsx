@@ -49,7 +49,7 @@ export default function HeroSection() {
         minHeight: 640,
         maxHeight: 1080,
         overflow: "hidden",
-        background: "#0a0a0a",
+        background: "var(--color-background, #ffffff)",
       }}
     >
       {/* Background Media Container */}
@@ -89,7 +89,7 @@ export default function HeroSection() {
         )}
       </motion.div>
 
-      {/* Top Vignette for Navbar readability */}
+      {/* Top Subtle Vignette for Navbar readability */}
       <div
         style={{
           position: "absolute",
@@ -98,13 +98,13 @@ export default function HeroSection() {
           right: 0,
           height: 180,
           background:
-            "linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
+            "linear-gradient(180deg, rgba(255,255,255,0.7) 0%, rgba(255,255,255,0.2) 60%, transparent 100%)",
           zIndex: 1,
           pointerEvents: "none",
         }}
       />
 
-      {/* Bottom Rich Gradient for Editorial Typography */}
+      {/* Bottom Rich Light Gradient for Editorial Typography & Seamless Page Blend */}
       <div
         style={{
           position: "absolute",
@@ -113,19 +113,19 @@ export default function HeroSection() {
           right: 0,
           height: "70%",
           background:
-            "linear-gradient(to top, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.7) 45%, rgba(10,10,10,0.15) 85%, transparent 100%)",
+            "linear-gradient(to top, var(--color-background, #ffffff) 0%, rgba(255,255,255,0.88) 32%, rgba(255,255,255,0.25) 72%, transparent 100%)",
           zIndex: 1,
           pointerEvents: "none",
         }}
       />
 
-      {/* Left Vignette for text contrast */}
+      {/* Left Subtle Glow for text contrast */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "linear-gradient(to right, rgba(10,10,10,0.8) 0%, rgba(10,10,10,0.3) 50%, transparent 80%)",
+            "linear-gradient(to right, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.3) 48%, transparent 78%)",
           zIndex: 1,
           pointerEvents: "none",
         }}
@@ -133,14 +133,14 @@ export default function HeroSection() {
 
       {/* Media Controls Pill (Cleanly positioned below navbar) */}
       <div
-        className="absolute top-[120px] md:top-[132px] right-3 sm:right-6 md:right-8 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/70 backdrop-blur-md p-1 sm:p-1.5 rounded-full border border-white/20 shadow-xl scale-90 sm:scale-100 origin-right"
+        className="absolute top-[120px] md:top-[132px] right-3 sm:right-6 md:right-8 z-20 flex items-center gap-1.5 sm:gap-2 bg-white/85 backdrop-blur-md p-1 sm:p-1.5 rounded-full border border-black/10 shadow-lg scale-90 sm:scale-100 origin-right"
       >
         {/* Mode Switcher */}
         <button
           onClick={() => setMediaMode("video")}
           style={{
             background: mediaMode === "video" ? "var(--color-accent)" : "transparent",
-            color: mediaMode === "video" ? "#000" : "#fff",
+            color: mediaMode === "video" ? "#0a1315" : "var(--color-muted, #4b5563)",
             border: "none",
             borderRadius: 999,
             padding: "4px 10px",
@@ -155,13 +155,13 @@ export default function HeroSection() {
             transition: "all 0.2s",
           }}
         >
-          <Play size={10} fill={mediaMode === "video" ? "#000" : "transparent"} /> Video
+          <Play size={10} fill={mediaMode === "video" ? "#0a1315" : "transparent"} /> Video
         </button>
         <button
           onClick={() => setMediaMode("image")}
           style={{
             background: mediaMode === "image" ? "var(--color-accent)" : "transparent",
-            color: mediaMode === "image" ? "#000" : "#fff",
+            color: mediaMode === "image" ? "#0a1315" : "var(--color-muted, #4b5563)",
             border: "none",
             borderRadius: 999,
             padding: "4px 10px",
@@ -182,14 +182,14 @@ export default function HeroSection() {
         {/* Video Play/Pause & Mute when in video mode */}
         {mediaMode === "video" && (
           <>
-            <div style={{ width: 1, height: 14, background: "rgba(255,255,255,0.2)" }} />
+            <div style={{ width: 1, height: 14, background: "rgba(0,0,0,0.12)" }} />
             <button
               onClick={togglePlay}
               aria-label={isPlaying ? "Pause Video" : "Play Video"}
               style={{
                 background: "transparent",
                 border: "none",
-                color: "white",
+                color: "var(--color-text, #0a1315)",
                 padding: 3,
                 display: "flex",
                 alignItems: "center",
@@ -204,7 +204,7 @@ export default function HeroSection() {
               style={{
                 background: "transparent",
                 border: "none",
-                color: "white",
+                color: "var(--color-text, #0a1315)",
                 padding: 3,
                 display: "flex",
                 alignItems: "center",
@@ -252,7 +252,7 @@ export default function HeroSection() {
             <span
               style={{
                 background: "var(--color-accent)",
-                color: "#000000",
+                color: "#0a1315",
                 fontSize: 10,
                 fontWeight: 800,
                 letterSpacing: "0.2em",
@@ -266,10 +266,10 @@ export default function HeroSection() {
             <span
               style={{
                 fontSize: 11,
-                fontWeight: 600,
+                fontWeight: 700,
                 letterSpacing: "0.2em",
                 textTransform: "uppercase",
-                color: "rgba(255,255,255,0.75)",
+                color: "var(--color-muted, #4b5563)",
               }}
             >
               STRICTLY LIMITED CAPSULE
@@ -282,12 +282,12 @@ export default function HeroSection() {
             className="font-display"
             style={{
               fontSize: "clamp(48px, 10vw, 140px)",
-              color: "#ffffff",
+              color: "var(--color-text, #0a1315)",
               lineHeight: 0.9,
               letterSpacing: "0.02em",
               marginBottom: 20,
               textTransform: "uppercase",
-              textShadow: "0 8px 30px rgba(0,0,0,0.5)",
+              textShadow: "0 2px 20px rgba(255,255,255,0.8)",
             }}
           >
             WEAR{" "}
@@ -309,7 +309,8 @@ export default function HeroSection() {
             variants={fadeUp}
             style={{
               fontSize: "clamp(14px, 1.8vw, 18px)",
-              color: "rgba(255,255,255,0.8)",
+              color: "var(--color-muted, #4b5563)",
+              fontWeight: 500,
               lineHeight: 1.6,
               maxWidth: 580,
               marginBottom: 28,
@@ -347,19 +348,26 @@ export default function HeroSection() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  color: "#ffffff",
+                  background: "rgba(255,255,255,0.75)",
+                  border: "1px solid var(--color-border, #d1d5db)",
+                  color: "var(--color-text, #0a1315)",
                   fontSize: 13,
                   fontWeight: 700,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
                   transition: "all 0.25s ease",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#ffffff";
+                  e.currentTarget.style.borderColor = "var(--color-accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.75)";
+                  e.currentTarget.style.borderColor = "var(--color-border, #d1d5db)";
+                }}
               >
-                Men's Edit
+                Men&apos;s Edit
               </Link>
               <Link
                 href="/women"
@@ -368,19 +376,26 @@ export default function HeroSection() {
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 8,
-                  background: "rgba(255,255,255,0.08)",
-                  border: "1px solid rgba(255,255,255,0.25)",
-                  color: "#ffffff",
+                  background: "rgba(255,255,255,0.75)",
+                  border: "1px solid var(--color-border, #d1d5db)",
+                  color: "var(--color-text, #0a1315)",
                   fontSize: 13,
                   fontWeight: 700,
                   letterSpacing: "0.08em",
                   textTransform: "uppercase",
                   transition: "all 0.25s ease",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
-                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#ffffff";
+                  e.currentTarget.style.borderColor = "var(--color-accent)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "rgba(255,255,255,0.75)";
+                  e.currentTarget.style.borderColor = "var(--color-border, #d1d5db)";
+                }}
               >
-                Women's Edit
+                Women&apos;s Edit
               </Link>
             </div>
           </motion.div>
@@ -399,7 +414,7 @@ export default function HeroSection() {
             fontSize: 9,
             fontWeight: 800,
             letterSpacing: "0.25em",
-            color: "rgba(255,255,255,0.45)",
+            color: "var(--color-muted, #6b7280)",
             textTransform: "uppercase",
           }}
         >
