@@ -155,9 +155,7 @@ export default function ProductCard({ product, index = 0, variant = "default" }:
               <ShoppingBag size={14} />
               {adding ? "Added!" : "Quick Add"}
             </motion.button>
-            <Link
-              href={`/product/${product.slug}`}
-              onClick={(e) => e.stopPropagation()}
+            <span
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -170,7 +168,7 @@ export default function ProductCard({ product, index = 0, variant = "default" }:
               aria-label="Quick view"
             >
               <Eye size={14} />
-            </Link>
+            </span>
           </div>
         </div>
 
