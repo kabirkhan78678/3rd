@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
   ArrowDown,
@@ -17,104 +17,51 @@ import {
   ShieldCheck,
   Truck,
   RotateCcw,
+  Sliders,
   Check,
-  Radio,
-  Move3d,
 } from "lucide-react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Float, Sphere, MeshDistortMaterial, OrbitControls, Torus } from "@react-three/drei";
+import { Float, Sphere, MeshDistortMaterial } from "@react-three/drei";
 import * as THREE from "three";
 import ProductCard from "@/components/product/ProductCard";
-import { products, getFeaturedProducts, getBestSellers, Product } from "@/data/products";
+import { products, getFeaturedProducts, getBestSellers, getNewArrivals, Product } from "@/data/products";
 import { staggerContainer, fadeUp, slideInLeft, slideInRight, VIEWPORT_ONCE } from "@/lib/animations";
-import {
-  Magnetic,
-  TiltCard,
-  KineticLine,
-  ScrollHighlightText,
-  DropCountdown,
-  AudioBars,
-  Hero3DBadge,
-} from "@/components/ui/InteractiveMotion";
-import HeroParticleCloud from "@/components/ui/HeroParticleCloud";
-import ScrambleText from "@/components/ui/ScrambleText";
-import { sfx } from "@/lib/sound";
 
-// ─── 3D Vault Object (Advanced Interactive Cyber Atelier with Orbiting Rings) ─
+// ─── 3D Vault Object (In Dedicated Interactive Lab) ──────────────────────────
 function VaultObject({ color = "#b5f000", distort = 0.4 }: { color?: string; distort?: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const ringRef1 = useRef<THREE.Mesh>(null);
-  const ringRef2 = useRef<THREE.Mesh>(null);
 
   useFrame((_, delta) => {
     if (meshRef.current) {
       meshRef.current.rotation.x += delta * 0.35;
       meshRef.current.rotation.y += delta * 0.45;
     }
-    if (ringRef1.current) {
-      ringRef1.current.rotation.x += delta * 0.6;
-      ringRef1.current.rotation.y += delta * 0.4;
-    }
-    if (ringRef2.current) {
-      ringRef2.current.rotation.x -= delta * 0.4;
-      ringRef2.current.rotation.z += delta * 0.7;
-    }
   });
 
   return (
     <>
-      {/* Central Morphing Chrome Sphere */}
-      <Float speed={2.5} rotationIntensity={0.6} floatIntensity={0.8}>
+      <Float speed={2} rotationIntensity={0.5} floatIntensity={0.8}>
         <mesh ref={meshRef}>
-          <Sphere args={[1.2, 64, 64]}>
+          <Sphere args={[1.3, 64, 64]}>
             <MeshDistortMaterial
               color={color}
               distort={distort}
-              speed={2.6}
-              roughness={0.06}
-              metalness={0.96}
+              speed={2.2}
+              roughness={0.08}
+              metalness={0.92}
             />
           </Sphere>
         </mesh>
-
-        {/* Outer Orbiting Metallic Cyber Ring 1 */}
-        <mesh ref={ringRef1}>
-          <Torus args={[1.8, 0.04, 16, 100]}>
-            <meshStandardMaterial
-              color="#ffffff"
-              metalness={1}
-              roughness={0.1}
-              wireframe={false}
-            />
-          </Torus>
-        </mesh>
-
-        {/* Outer Orbiting Metallic Cyber Ring 2 */}
-        <mesh ref={ringRef2}>
-          <Torus args={[2.2, 0.03, 16, 100]}>
-            <meshStandardMaterial
-              color={color}
-              emissive={color}
-              emissiveIntensity={0.6}
-              metalness={0.9}
-              roughness={0.1}
-            />
-          </Torus>
-        </mesh>
       </Float>
-
-      {/* Dynamic Studio Lighting */}
-      <ambientLight intensity={0.6} />
-      <directionalLight position={[6, 6, 6]} intensity={3} color="#ffffff" />
-      <directionalLight position={[-6, -4, -4]} intensity={2} color="#ffffff" />
-      <pointLight position={[-4, -3, -2]} intensity={4} color={color} />
-      <pointLight position={[4, 3, 2]} intensity={3} color="#ffffff" />
+      <ambientLight intensity={0.5} />
+      <directionalLight position={[5, 5, 5]} intensity={2.5} color="#ffffff" />
+      <pointLight position={[-4, -3, -2]} intensity={3} color={color} />
     </>
   );
 }
 
 // ─── Infinite Marquee ────────────────────────────────────────────────────────
-function Marquee({ items, dark = false, speed = 24 }: { items: string[]; dark?: boolean; speed?: number }) {
+function Marquee({ items, dark = false, speed = 26 }: { items: string[]; dark?: boolean; speed?: number }) {
   const repeated = [...items, ...items, ...items, ...items];
   return (
     <div
@@ -125,8 +72,6 @@ function Marquee({ items, dark = false, speed = 24 }: { items: string[]; dark?: 
         display: "flex",
         borderTop: dark ? "1px solid rgba(255,255,255,0.1)" : "none",
         borderBottom: dark ? "1px solid rgba(255,255,255,0.1)" : "none",
-        position: "relative",
-        zIndex: 5,
       }}
     >
       <motion.div
@@ -139,10 +84,10 @@ function Marquee({ items, dark = false, speed = 24 }: { items: string[]; dark?: 
             key={i}
             className="font-display"
             style={{
-              fontSize: 22,
+              fontSize: 20,
               letterSpacing: "0.12em",
-              color: dark ? "rgba(255,255,255,0.8)" : "#000000",
-              paddingInline: 36,
+              color: dark ? "rgba(255,255,255,0.75)" : "#000000",
+              paddingInline: 32,
               whiteSpace: "nowrap",
             }}
           >
@@ -174,13 +119,13 @@ function SectionHeading({
       initial="hidden"
       whileInView="visible"
       viewport={VIEWPORT_ONCE}
-      style={{ textAlign: align, marginBottom: 40, position: "relative", zIndex: 2 }}
+      style={{ textAlign: align, marginBottom: 40 }}
     >
       <span
         className="section-eyebrow"
         style={{ color: light ? "var(--color-accent)" : undefined }}
       >
-        <ScrambleText text={eyebrow} scrambleSpeed={20} />
+        {eyebrow}
       </span>
       <h2
         className="section-heading"
@@ -209,11 +154,10 @@ function SectionHeading({
 
 // ─── MAIN HOME PAGE ──────────────────────────────────────────────────────────
 export default function HomePage() {
-  // Hero Media & Sound State
+  // Hero Media State
   const [mediaMode, setMediaMode] = useState<"video" | "image">("video");
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMuted, setIsMuted] = useState(true);
-  const [soundFXEnabled, setSoundFXEnabled] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Active category filter for Featured section
@@ -221,28 +165,19 @@ export default function HomePage() {
 
   // 3D Vault interactive state
   const [vaultColor, setVaultColor] = useState("#b5f000");
-  const [vaultDistort, setVaultDistort] = useState(0.45);
+  const [vaultDistort, setVaultDistort] = useState(0.4);
 
-  // Scroll parallax for hero & background typography
+  // Scroll parallax for hero
   const heroRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: heroProgress } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const heroScale = useTransform(heroProgress, [0, 1], [1, 1.1]);
-  const heroContentY = useTransform(heroProgress, [0, 1], [0, -70]);
-  const heroOpacity = useTransform(heroProgress, [0, 0.8], [1, 0.05]);
-
-  // Background Parallax Text in Featured Section
-  const featuredRef = useRef<HTMLElement>(null);
-  const { scrollYProgress: featuredProgress } = useScroll({
-    target: featuredRef,
-    offset: ["start end", "end start"],
-  });
-  const bgTextX = useTransform(featuredProgress, [0, 1], [-180, 180]);
+  const heroScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+  const heroContentY = useTransform(scrollYProgress, [0, 1], [0, -60]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.75], [1, 0.1]);
 
   const togglePlay = () => {
-    sfx.click();
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
@@ -254,21 +189,15 @@ export default function HomePage() {
   };
 
   const toggleMute = () => {
-    sfx.click();
     if (!videoRef.current) return;
     videoRef.current.muted = !isMuted;
     setIsMuted(!isMuted);
   };
 
-  const toggleSoundFX = () => {
-    sfx.click();
-    sfx.enabled = !soundFXEnabled;
-    setSoundFXEnabled(!soundFXEnabled);
-  };
-
   // Products
   const featured = getFeaturedProducts();
   const bestSellers = getBestSellers();
+  const newArrivals = getNewArrivals();
 
   // Filtered products for Featured Grid
   const filteredProducts: Product[] =
@@ -283,7 +212,7 @@ export default function HomePage() {
   return (
     <div>
       {/* ══════════════════════════════════════════════════════════════════
-          HERO — Video Background + 3D Particle Cloud + Kinetic Typography
+          HERO — Full Bleed Cinematic Video / High-Res Photo
       ══════════════════════════════════════════════════════════════════ */}
       <section
         ref={heroRef}
@@ -297,7 +226,7 @@ export default function HomePage() {
           background: "#0a0a0a",
         }}
       >
-        {/* Background Media Container with Parallax Zoom */}
+        {/* Background Media Container */}
         <motion.div
           style={{
             position: "absolute",
@@ -334,25 +263,6 @@ export default function HomePage() {
           )}
         </motion.div>
 
-        {/* 🌟 3D INTERACTIVE PARTICLE CLOUD & FLOATING CYBER SHARDS OVER VIDEO 🌟 */}
-        <HeroParticleCloud color="var(--color-accent)" />
-
-        {/* Cyber Laser Scanline Animation */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            right: 0,
-            height: "2px",
-            background:
-              "linear-gradient(90deg, transparent 0%, rgba(181,240,0,0.8) 50%, transparent 100%)",
-            boxShadow: "0 0 15px var(--color-accent)",
-            zIndex: 3,
-            pointerEvents: "none",
-            animation: "scanline 6s ease-in-out infinite",
-          }}
-        />
-
         {/* Top Vignette for Navbar readability */}
         <div
           style={{
@@ -362,7 +272,7 @@ export default function HomePage() {
             right: 0,
             height: 180,
             background:
-              "linear-gradient(180deg, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
+              "linear-gradient(180deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 50%, transparent 100%)",
             zIndex: 1,
             pointerEvents: "none",
           }}
@@ -375,9 +285,9 @@ export default function HomePage() {
             bottom: 0,
             left: 0,
             right: 0,
-            height: "70%",
+            height: "65%",
             background:
-              "linear-gradient(to top, rgba(10,10,10,0.98) 0%, rgba(10,10,10,0.75) 45%, rgba(10,10,10,0.15) 85%, transparent 100%)",
+              "linear-gradient(to top, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.7) 45%, rgba(10,10,10,0.15) 85%, transparent 100%)",
             zIndex: 1,
             pointerEvents: "none",
           }}
@@ -389,13 +299,13 @@ export default function HomePage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(to right, rgba(10,10,10,0.82) 0%, rgba(10,10,10,0.35) 45%, transparent 75%)",
+              "linear-gradient(to right, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.3) 45%, transparent 75%)",
             zIndex: 1,
             pointerEvents: "none",
           }}
         />
 
-        {/* Media & SFX Controls Pill (Top Right) */}
+        {/* Media Controls Pill (Top Right) */}
         <div
           style={{
             position: "absolute",
@@ -405,24 +315,16 @@ export default function HomePage() {
             display: "flex",
             alignItems: "center",
             gap: 8,
-            background: "rgba(0,0,0,0.65)",
-            backdropFilter: "blur(16px)",
-            padding: "6px 12px",
+            background: "rgba(0,0,0,0.6)",
+            backdropFilter: "blur(12px)",
+            padding: "6px 10px",
             borderRadius: 999,
-            border: "1px solid rgba(255,255,255,0.18)",
-            boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
+            border: "1px solid rgba(255,255,255,0.15)",
           }}
         >
-          {/* Audio Bars Indicator when video is playing */}
-          <AudioBars isPlaying={isPlaying && mediaMode === "video"} />
-
           {/* Mode Switcher */}
           <button
-            onClick={() => {
-              sfx.switch();
-              setMediaMode("video");
-            }}
-            onMouseEnter={() => sfx.hover()}
+            onClick={() => setMediaMode("video")}
             style={{
               background: mediaMode === "video" ? "var(--color-accent)" : "transparent",
               color: mediaMode === "video" ? "#000" : "#fff",
@@ -443,11 +345,7 @@ export default function HomePage() {
             <Play size={12} fill={mediaMode === "video" ? "#000" : "transparent"} /> Video
           </button>
           <button
-            onClick={() => {
-              sfx.switch();
-              setMediaMode("image");
-            }}
-            onMouseEnter={() => sfx.hover()}
+            onClick={() => setMediaMode("image")}
             style={{
               background: mediaMode === "image" ? "var(--color-accent)" : "transparent",
               color: mediaMode === "image" ? "#000" : "#fff",
@@ -468,13 +366,12 @@ export default function HomePage() {
             Photo
           </button>
 
-          {/* Video Controls */}
+          {/* Video Play/Pause & Mute when in video mode */}
           {mediaMode === "video" && (
             <>
               <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.2)" }} />
               <button
                 onClick={togglePlay}
-                onMouseEnter={() => sfx.hover()}
                 aria-label={isPlaying ? "Pause Video" : "Play Video"}
                 style={{
                   background: "transparent",
@@ -490,7 +387,6 @@ export default function HomePage() {
               </button>
               <button
                 onClick={toggleMute}
-                onMouseEnter={() => sfx.hover()}
                 aria-label={isMuted ? "Unmute Video" : "Mute Video"}
                 style={{
                   background: "transparent",
@@ -506,28 +402,9 @@ export default function HomePage() {
               </button>
             </>
           )}
-
-          {/* UI Sound FX Toggle */}
-          <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.2)" }} />
-          <button
-            onClick={toggleSoundFX}
-            onMouseEnter={() => sfx.hover()}
-            title={soundFXEnabled ? "UI Sound FX Active" : "UI Sound FX Muted"}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: soundFXEnabled ? "var(--color-accent)" : "rgba(255,255,255,0.4)",
-              padding: 4,
-              display: "flex",
-              alignItems: "center",
-              cursor: "pointer",
-            }}
-          >
-            <Radio size={14} />
-          </button>
         </div>
 
-        {/* Hero Editorial Content with Kinetic Typography */}
+        {/* Hero Editorial Content */}
         <motion.div
           style={{
             position: "absolute",
@@ -538,50 +415,99 @@ export default function HomePage() {
             display: "flex",
             flexDirection: "column",
             justifyContent: "flex-end",
-            paddingBottom: 76,
+            paddingBottom: 72,
           }}
           className="container"
         >
-          <div style={{ maxWidth: 880 }}>
-            {/* Live Drop Countdown Ticker */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            animate="visible"
+            style={{ maxWidth: 840 }}
+          >
+            {/* Season Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.5 }}
-              style={{ marginBottom: 20 }}
+              variants={fadeUp}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 12,
+                marginBottom: 20,
+              }}
             >
-              <DropCountdown />
+              <span
+                style={{
+                  background: "var(--color-accent)",
+                  color: "#000000",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  padding: "4px 12px",
+                  borderRadius: 2,
+                }}
+              >
+                AW25 DROP 01
+              </span>
+              <span
+                style={{
+                  fontSize: 12,
+                  fontWeight: 600,
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  color: "rgba(255,255,255,0.75)",
+                }}
+              >
+                STRICTLY LIMITED CAPSULE
+              </span>
             </motion.div>
 
-            {/* Kinetic Typography Masked Lines */}
-            <div style={{ marginBottom: 20 }}>
-              <KineticLine text="WEAR" delay={0.2} />
-              <KineticLine text="YOUR" highlightWord="YOUR" delay={0.35} />
-              <KineticLine text="ATTITUDE." delay={0.5} />
-            </div>
+            {/* Giant Title */}
+            <motion.h1
+              variants={fadeUp}
+              className="font-display"
+              style={{
+                fontSize: "clamp(60px, 11vw, 150px)",
+                color: "#ffffff",
+                lineHeight: 0.9,
+                letterSpacing: "0.02em",
+                marginBottom: 24,
+                textTransform: "uppercase",
+                textShadow: "0 8px 30px rgba(0,0,0,0.5)",
+              }}
+            >
+              WEAR{" "}
+              <span
+                style={{
+                  color: "var(--color-accent)",
+                  WebkitTextStroke: "1px var(--color-accent)",
+                  filter: "drop-shadow(0 0 20px rgba(181,240,0,0.4))",
+                }}
+              >
+                YOUR
+              </span>
+              <br />
+              ATTITUDE.
+            </motion.h1>
 
-            {/* Subtitle with fadeUp */}
+            {/* Subtitle */}
             <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.65, duration: 0.6 }}
+              variants={fadeUp}
               style={{
                 fontSize: "clamp(15px, 1.8vw, 19px)",
-                color: "rgba(255,255,255,0.85)",
+                color: "rgba(255,255,255,0.8)",
                 lineHeight: 1.6,
-                maxWidth: 600,
+                maxWidth: 580,
                 marginBottom: 32,
               }}
             >
-              Unapologetic streetwear engineered for the cultural vanguard.
+              Unapologetic streetwear designed for those who define the culture.
               Heavyweight bespoke fabrics, architectural silhouettes, and limited drops.
             </motion.p>
 
-            {/* Magnetic CTA Buttons */}
+            {/* CTA Buttons */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
+              variants={fadeUp}
               style={{
                 display: "flex",
                 gap: 16,
@@ -589,93 +515,68 @@ export default function HomePage() {
                 alignItems: "center",
               }}
             >
-              <Magnetic strength={0.3}>
-                <Link
-                  href="/search"
-                  onMouseEnter={() => sfx.hover()}
-                  onClick={() => sfx.click()}
-                  className="btn btn-accent btn-lg"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 10,
-                    fontSize: 13,
-                    fontWeight: 800,
-                    letterSpacing: "0.1em",
-                    boxShadow: "0 8px 30px rgba(181,240,0,0.45)",
-                  }}
-                >
-                  Shop Collection <ArrowRight size={18} />
-                </Link>
-              </Magnetic>
-
-              <Magnetic strength={0.25}>
-                <Link
-                  href="/men"
-                  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                    sfx.hover();
-                    e.currentTarget.style.background = "rgba(255,255,255,0.18)";
-                  }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                  }}
-                  onClick={() => sfx.click()}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "16px 28px",
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.25)",
-                    color: "#ffffff",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    backdropFilter: "blur(10px)",
-                    transition: "all 0.25s ease",
-                  }}
-                >
-                  Men's Edit
-                </Link>
-              </Magnetic>
-
-              <Magnetic strength={0.25}>
-                <Link
-                  href="/women"
-                  onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                    sfx.hover();
-                    e.currentTarget.style.background = "rgba(255,255,255,0.18)";
-                  }}
-                  onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                    e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                  }}
-                  onClick={() => sfx.click()}
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                    padding: "16px 28px",
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.25)",
-                    color: "#ffffff",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    letterSpacing: "0.08em",
-                    textTransform: "uppercase",
-                    backdropFilter: "blur(10px)",
-                    transition: "all 0.25s ease",
-                  }}
-                >
-                  Women's Edit
-                </Link>
-              </Magnetic>
+              <Link
+                href="/search"
+                className="btn btn-accent btn-lg"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  fontSize: 13,
+                  fontWeight: 800,
+                  letterSpacing: "0.1em",
+                  boxShadow: "0 8px 30px rgba(181,240,0,0.35)",
+                }}
+              >
+                Shop Collection <ArrowRight size={18} />
+              </Link>
+              <Link
+                href="/men"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "16px 28px",
+                  background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  color: "#ffffff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  backdropFilter: "blur(10px)",
+                  transition: "all 0.25s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+              >
+                Men's Edit
+              </Link>
+              <Link
+                href="/women"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "16px 28px",
+                  background: "rgba(255,255,255,0.08)",
+                  border: "1px solid rgba(255,255,255,0.25)",
+                  color: "#ffffff",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  backdropFilter: "blur(10px)",
+                  transition: "all 0.25s ease",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.18)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+              >
+                Women's Edit
+              </Link>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
-
-        {/* Non-intrusive 3D Hologram Badge (Safe Hero Corner) */}
-        <Hero3DBadge />
 
         {/* Scroll Cue (Centered Bottom) */}
         <motion.div
@@ -729,9 +630,9 @@ export default function HomePage() {
       />
 
       {/* ══════════════════════════════════════════════════════════════════
-          CURATED CATEGORIES (3D Tilt Cards with Specular Glare)
+          CURATED CATEGORIES (Visual High-Fashion Bento)
       ══════════════════════════════════════════════════════════════════ */}
-      <section className="section" style={{ background: "var(--color-surface)", paddingBlock: 80, position: "relative" }}>
+      <section className="section" style={{ background: "var(--color-surface)", paddingBlock: 80 }}>
         <div className="container">
           <SectionHeading
             eyebrow="Curated Capsules"
@@ -743,7 +644,7 @@ export default function HomePage() {
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-              gap: 24,
+              gap: 20,
             }}
           >
             {[
@@ -784,91 +685,87 @@ export default function HomePage() {
                 viewport={VIEWPORT_ONCE}
                 transition={{ delay: i * 0.1 }}
               >
-                <TiltCard maxTilt={8}>
-                  <Link
-                    href={cat.href}
-                    onMouseEnter={() => sfx.hover()}
-                    onClick={() => sfx.click()}
-                    style={{ textDecoration: "none", display: "block" }}
+                <Link
+                  href={cat.href}
+                  style={{ textDecoration: "none", display: "block" }}
+                >
+                  <div
+                    style={{
+                      position: "relative",
+                      aspectRatio: "3/4",
+                      overflow: "hidden",
+                      background: "#111",
+                      border: "1px solid var(--color-border)",
+                    }}
+                    onMouseEnter={(e) => {
+                      const img = e.currentTarget.querySelector("img");
+                      if (img) img.style.transform = "scale(1.08)";
+                    }}
+                    onMouseLeave={(e) => {
+                      const img = e.currentTarget.querySelector("img");
+                      if (img) img.style.transform = "scale(1)";
+                    }}
                   >
+                    <Image
+                      src={cat.img}
+                      alt={cat.title}
+                      fill
+                      style={{
+                        objectFit: "cover",
+                        transition: "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)",
+                      }}
+                      sizes="(max-width: 768px) 100vw, 25vw"
+                    />
                     <div
                       style={{
-                        position: "relative",
-                        aspectRatio: "3/4",
-                        overflow: "hidden",
-                        background: "#111",
-                        border: "1px solid var(--color-border)",
+                        position: "absolute",
+                        inset: 0,
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)",
                       }}
-                      onMouseEnter={(e) => {
-                        const img = e.currentTarget.querySelector("img");
-                        if (img) img.style.transform = "scale(1.08)";
-                      }}
-                      onMouseLeave={(e) => {
-                        const img = e.currentTarget.querySelector("img");
-                        if (img) img.style.transform = "scale(1)";
-                      }}
-                    >
-                      <Image
-                        src={cat.img}
-                        alt={cat.title}
-                        fill
+                    />
+                    <div style={{ position: "absolute", top: 16, left: 16 }}>
+                      <span className="badge badge-new">{cat.badge}</span>
+                    </div>
+                    <div style={{ position: "absolute", bottom: 24, left: 24, right: 24 }}>
+                      <h3
+                        className="font-display"
                         style={{
-                          objectFit: "cover",
-                          transition: "transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1)",
+                          fontSize: 32,
+                          color: "#ffffff",
+                          lineHeight: 1,
+                          marginBottom: 6,
+                          letterSpacing: "0.04em",
                         }}
-                        sizes="(max-width: 768px) 100vw, 25vw"
-                      />
+                      >
+                        {cat.title}
+                      </h3>
+                      <p
+                        style={{
+                          fontSize: 13,
+                          color: "rgba(255,255,255,0.7)",
+                          marginBottom: 16,
+                        }}
+                      >
+                        {cat.sub}
+                      </p>
                       <div
                         style={{
-                          position: "absolute",
-                          inset: 0,
-                          background:
-                            "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 6,
+                          color: "var(--color-accent)",
+                          fontSize: 12,
+                          fontWeight: 700,
+                          letterSpacing: "0.1em",
+                          textTransform: "uppercase",
                         }}
-                      />
-                      <div style={{ position: "absolute", top: 16, left: 16 }}>
-                        <span className="badge badge-new">{cat.badge}</span>
-                      </div>
-                      <div style={{ position: "absolute", bottom: 24, left: 24, right: 24 }}>
-                        <h3
-                          className="font-display"
-                          style={{
-                            fontSize: 32,
-                            color: "#ffffff",
-                            lineHeight: 1,
-                            marginBottom: 6,
-                            letterSpacing: "0.04em",
-                          }}
-                        >
-                          <ScrambleText text={cat.title} />
-                        </h3>
-                        <p
-                          style={{
-                            fontSize: 13,
-                            color: "rgba(255,255,255,0.7)",
-                            marginBottom: 16,
-                          }}
-                        >
-                          {cat.sub}
-                        </p>
-                        <div
-                          style={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            gap: 6,
-                            color: "var(--color-accent)",
-                            fontSize: 12,
-                            fontWeight: 700,
-                            letterSpacing: "0.1em",
-                            textTransform: "uppercase",
-                          }}
-                        >
-                          Shop Now <ArrowRight size={14} />
-                        </div>
+                      >
+                        Shop Now <ArrowRight size={14} />
                       </div>
                     </div>
-                  </Link>
-                </TiltCard>
+                  </div>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -876,36 +773,10 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          FEATURED DROP (With Parallax Background Typography)
+          FEATURED DROP (Interactive Tabbed Showcase)
       ══════════════════════════════════════════════════════════════════ */}
-      <section
-        ref={featuredRef}
-        className="section"
-        style={{ background: "var(--color-background)", position: "relative", overflow: "hidden" }}
-      >
-        {/* Giant Outlined Parallax Background Text */}
-        <motion.div
-          style={{
-            x: bgTextX,
-            position: "absolute",
-            top: "15%",
-            left: "-20%",
-            whiteSpace: "nowrap",
-            fontSize: "clamp(100px, 18vw, 240px)",
-            fontWeight: 900,
-            color: "transparent",
-            WebkitTextStroke: "1.5px rgba(0,0,0,0.06)",
-            letterSpacing: "0.04em",
-            userSelect: "none",
-            pointerEvents: "none",
-            zIndex: 0,
-          }}
-          className="font-display"
-        >
-          KLUB ARCHIVE // AW25
-        </motion.div>
-
-        <div className="container" style={{ position: "relative", zIndex: 1 }}>
+      <section className="section" style={{ background: "var(--color-background)" }}>
+        <div className="container">
           <div
             style={{
               display: "flex",
@@ -922,7 +793,7 @@ export default function HomePage() {
               sub="Handpicked essentials selling out fast. Restocks are never guaranteed."
             />
 
-            {/* Filter Tabs with animated pill */}
+            {/* Filter Tabs */}
             <div
               style={{
                 display: "flex",
@@ -941,11 +812,7 @@ export default function HomePage() {
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => {
-                    sfx.switch();
-                    setActiveTab(tab.id as any);
-                  }}
-                  onMouseEnter={() => sfx.hover()}
+                  onClick={() => setActiveTab(tab.id as any)}
                   style={{
                     padding: "8px 18px",
                     fontSize: 12,
@@ -957,7 +824,7 @@ export default function HomePage() {
                     background: activeTab === tab.id ? "var(--color-primary)" : "transparent",
                     color: activeTab === tab.id ? "#ffffff" : "var(--color-muted)",
                     cursor: "pointer",
-                    transition: "all 0.25s ease",
+                    transition: "all 0.2s",
                   }}
                 >
                   {tab.label}
@@ -985,23 +852,19 @@ export default function HomePage() {
 
           {/* View All CTA */}
           <div style={{ textAlign: "center", marginTop: 48 }}>
-            <Magnetic strength={0.3}>
-              <Link
-                href="/search"
-                onMouseEnter={() => sfx.hover()}
-                onClick={() => sfx.click()}
-                className="btn btn-outline btn-lg"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 10,
-                  fontSize: 13,
-                  fontWeight: 700,
-                }}
-              >
-                View Full Collection ({products.length} Items) <ArrowRight size={16} />
-              </Link>
-            </Magnetic>
+            <Link
+              href="/search"
+              className="btn btn-outline btn-lg"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 10,
+                fontSize: 13,
+                fontWeight: 700,
+              }}
+            >
+              View Full Collection ({products.length} Items) <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
       </section>
@@ -1025,12 +888,7 @@ export default function HomePage() {
             viewport={VIEWPORT_ONCE}
             style={{ position: "relative", overflow: "hidden", minHeight: 480 }}
           >
-            <Link
-              href="/men"
-              onMouseEnter={() => sfx.hover()}
-              onClick={() => sfx.click()}
-              style={{ display: "block", height: "100%", position: "relative" }}
-            >
+            <Link href="/men" style={{ display: "block", height: "100%", position: "relative" }}>
               <Image
                 src="/images/men-jacket.jpg"
                 alt="Shop Men's Streetwear"
@@ -1109,12 +967,7 @@ export default function HomePage() {
               borderLeft: "1px solid rgba(255,255,255,0.1)",
             }}
           >
-            <Link
-              href="/women"
-              onMouseEnter={() => sfx.hover()}
-              onClick={() => sfx.click()}
-              style={{ display: "block", height: "100%", position: "relative" }}
-            >
+            <Link href="/women" style={{ display: "block", height: "100%", position: "relative" }}>
               <Image
                 src="/images/women-jacket.jpg"
                 alt="Shop Women's Streetwear"
@@ -1183,7 +1036,7 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          INTERACTIVE 3D DIGITAL ATELIER / MATERIAL LAB (With 360° Drag Orbit)
+          INTERACTIVE 3D DIGITAL ATELIER / MATERIAL LAB
       ══════════════════════════════════════════════════════════════════ */}
       <section
         style={{
@@ -1195,16 +1048,16 @@ export default function HomePage() {
           borderBottom: "1px solid rgba(255,255,255,0.1)",
         }}
       >
-        {/* Ambient colored lighting */}
+        {/* Subtle background glow */}
         <div
           style={{
             position: "absolute",
             top: "50%",
             left: "50%",
-            width: 550,
-            height: 550,
+            width: 500,
+            height: 500,
             transform: "translate(-50%, -50%)",
-            background: `radial-gradient(circle, ${vaultColor}26 0%, transparent 70%)`,
+            background: `radial-gradient(circle, ${vaultColor}22 0%, transparent 70%)`,
             pointerEvents: "none",
             transition: "background 0.5s ease",
           }}
@@ -1239,7 +1092,7 @@ export default function HomePage() {
                   marginBottom: 16,
                 }}
               >
-                <Sparkles size={14} /> Realtime 3D Digital Atelier
+                <Sparkles size={14} /> The 3D Digital Atelier
               </span>
 
               <h2
@@ -1259,15 +1112,16 @@ export default function HomePage() {
 
               <p
                 style={{
-                  color: "rgba(255,255,255,0.72)",
+                  color: "rgba(255,255,255,0.7)",
                   fontSize: 15,
                   lineHeight: 1.7,
                   marginBottom: 32,
                   maxWidth: 480,
                 }}
               >
-                Every garment begins in our 3D digital laboratory. <strong>Click and drag to rotate</strong> our
-                deconstructed chrome core in full 360° 3D space, test shaders, and alter distortion.
+                Every garment begins in our 3D digital laboratory. Interact with our live
+                deconstructed material core — custom rendered in real-time with distorted
+                metallic micro-reflection.
               </p>
 
               {/* Color Switcher */}
@@ -1284,7 +1138,7 @@ export default function HomePage() {
                 >
                   Choose Finish & Shader Tone:
                 </p>
-                <div style={{ display: "flex", gap: 14 }}>
+                <div style={{ display: "flex", gap: 12 }}>
                   {[
                     { name: "Acid Lime", hex: "#b5f000" },
                     { name: "Liquid Silver", hex: "#ffffff" },
@@ -1293,27 +1147,19 @@ export default function HomePage() {
                   ].map((color) => (
                     <button
                       key={color.name}
-                      onClick={() => {
-                        sfx.switch();
-                        setVaultColor(color.hex);
-                      }}
-                      onMouseEnter={() => sfx.hover()}
+                      onClick={() => setVaultColor(color.hex)}
                       style={{
-                        width: 44,
-                        height: 44,
+                        width: 40,
+                        height: 40,
                         borderRadius: "50%",
                         background: color.hex,
                         border:
                           vaultColor === color.hex
                             ? "3px solid #ffffff"
                             : "2px solid rgba(255,255,255,0.2)",
-                        boxShadow:
-                          vaultColor === color.hex
-                            ? `0 0 20px ${color.hex}`
-                            : "none",
                         cursor: "pointer",
                         transform: vaultColor === color.hex ? "scale(1.15)" : "scale(1)",
-                        transition: "all 0.25s ease",
+                        transition: "all 0.2s ease",
                       }}
                       title={color.name}
                     />
@@ -1327,7 +1173,7 @@ export default function HomePage() {
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    color: "rgba(255,255,255,0.65)",
+                    color: "rgba(255,255,255,0.6)",
                     fontSize: 11,
                     fontWeight: 700,
                     letterSpacing: "0.1em",
@@ -1353,108 +1199,74 @@ export default function HomePage() {
                 />
               </div>
 
-              <Magnetic strength={0.3}>
-                <Link
-                  href="/about"
-                  onMouseEnter={() => sfx.hover()}
-                  onClick={() => sfx.click()}
-                  className="btn btn-outline"
-                  style={{
-                    color: "#ffffff",
-                    borderColor: "rgba(255,255,255,0.3)",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 8,
-                  }}
-                >
-                  Our Design Philosophy <ArrowRight size={16} />
-                </Link>
-              </Magnetic>
-            </motion.div>
-
-            {/* Right 3D Viewport with 360° Drag & Orbit Controls */}
-            <TiltCard maxTilt={4}>
-              <motion.div
-                variants={slideInRight}
-                initial="hidden"
-                whileInView="visible"
-                viewport={VIEWPORT_ONCE}
+              <Link
+                href="/about"
+                className="btn btn-outline"
                 style={{
-                  position: "relative",
-                  height: 460,
-                  background: "rgba(255,255,255,0.02)",
-                  border: "1px solid rgba(255,255,255,0.12)",
-                  borderRadius: 6,
-                  overflow: "hidden",
-                  boxShadow: `0 20px 50px rgba(0,0,0,0.8), 0 0 40px ${vaultColor}15`,
+                  color: "#ffffff",
+                  borderColor: "rgba(255,255,255,0.3)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
                 }}
               >
-                <Canvas camera={{ position: [0, 0, 4.2], fov: 45 }}>
-                  <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.8} />
-                  <VaultObject color={vaultColor} distort={vaultDistort} />
-                </Canvas>
+                Our Design Philosophy <ArrowRight size={16} />
+              </Link>
+            </motion.div>
 
-                {/* 360 Drag Prompt */}
+            {/* Right 3D Viewport */}
+            <motion.div
+              variants={slideInRight}
+              initial="hidden"
+              whileInView="visible"
+              viewport={VIEWPORT_ONCE}
+              style={{
+                position: "relative",
+                height: 440,
+                background: "rgba(255,255,255,0.02)",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: 4,
+                overflow: "hidden",
+              }}
+            >
+              <Canvas camera={{ position: [0, 0, 3.8], fov: 45 }}>
+                <VaultObject color={vaultColor} distort={vaultDistort} />
+              </Canvas>
+
+              {/* Corner Info Overlay */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 16,
+                  left: 20,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  color: "rgba(255,255,255,0.4)",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  letterSpacing: "0.15em",
+                  textTransform: "uppercase",
+                  pointerEvents: "none",
+                }}
+              >
                 <div
                   style={{
-                    position: "absolute",
-                    top: 16,
-                    right: 18,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    background: "rgba(0,0,0,0.6)",
-                    backdropFilter: "blur(10px)",
-                    padding: "4px 10px",
-                    borderRadius: 999,
-                    border: "1px solid rgba(255,255,255,0.15)",
-                    color: "rgba(255,255,255,0.7)",
-                    fontSize: 9,
-                    fontWeight: 700,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                    pointerEvents: "none",
+                    width: 6,
+                    height: 6,
+                    borderRadius: "50%",
+                    background: vaultColor,
                   }}
-                >
-                  <Move3d size={12} color="var(--color-accent)" /> Drag 360°
-                </div>
-
-                {/* Corner Info Overlay */}
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 16,
-                    left: 20,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 8,
-                    color: "rgba(255,255,255,0.45)",
-                    fontSize: 10,
-                    fontWeight: 700,
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    pointerEvents: "none",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: 6,
-                      height: 6,
-                      borderRadius: "50%",
-                      background: vaultColor,
-                      boxShadow: `0 0 8px ${vaultColor}`,
-                    }}
-                  />
-                  Live WebGL Simulation // 60 FPS
-                </div>
-              </motion.div>
-            </TiltCard>
+                />
+                Live WebGL Simulation // 60 FPS
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          MANIFESTO — Scroll-Scrubbed Text Illumination
+          MANIFESTO — High-Impact Streetwear Declaration
       ══════════════════════════════════════════════════════════════════ */}
       <section
         style={{
@@ -1501,10 +1313,23 @@ export default function HomePage() {
             <span style={{ color: "var(--color-accent)" }}>BLEND IN.</span>
           </motion.h2>
 
-          {/* Scroll-Driven Scrubbing Paragraph */}
-          <ScrollHighlightText
-            text="We don't manufacture trends. We forge cultural armor. Every stitch is calculated, every silhouette intentional. For those who stand tall when the crowd steps aside."
-          />
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={VIEWPORT_ONCE}
+            style={{
+              fontSize: "clamp(15px, 2vw, 20px)",
+              color: "rgba(255,255,255,0.7)",
+              maxWidth: 680,
+              margin: "0 auto 40px",
+              lineHeight: 1.7,
+            }}
+          >
+            We don't manufacture trends. We forge cultural armor.
+            Every stitch is calculated, every silhouette intentional.
+            For those who stand tall when the crowd steps aside.
+          </motion.p>
 
           <motion.div
             variants={fadeUp}
@@ -1513,39 +1338,31 @@ export default function HomePage() {
             viewport={VIEWPORT_ONCE}
             style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}
           >
-            <Magnetic strength={0.3}>
-              <Link
-                href="/search"
-                onMouseEnter={() => sfx.hover()}
-                onClick={() => sfx.click()}
-                className="btn btn-accent btn-lg"
-                style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
-              >
-                Shop All Releases <ArrowRight size={18} />
-              </Link>
-            </Magnetic>
-            <Magnetic strength={0.25}>
-              <Link
-                href="/about"
-                onMouseEnter={() => sfx.hover()}
-                onClick={() => sfx.click()}
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  padding: "16px 32px",
-                  background: "rgba(255,255,255,0.06)",
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  color: "#ffffff",
-                  fontSize: 13,
-                  fontWeight: 700,
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                }}
-              >
-                Read The Brand Story
-              </Link>
-            </Magnetic>
+            <Link
+              href="/search"
+              className="btn btn-accent btn-lg"
+              style={{ display: "inline-flex", alignItems: "center", gap: 10 }}
+            >
+              Shop All Releases <ArrowRight size={18} />
+            </Link>
+            <Link
+              href="/about"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                padding: "16px 32px",
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "#ffffff",
+                fontSize: 13,
+                fontWeight: 700,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+            >
+              Read The Brand Story
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -1570,17 +1387,13 @@ export default function HomePage() {
               heading={"Essential\nBestsellers."}
               sub="The iconic pieces that built the reputation."
             />
-            <Magnetic strength={0.25}>
-              <Link
-                href="/search?filter=bestsellers"
-                onMouseEnter={() => sfx.hover()}
-                onClick={() => sfx.click()}
-                className="btn btn-outline"
-                style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
-              >
-                View All Bestsellers <ArrowRight size={16} />
-              </Link>
-            </Magnetic>
+            <Link
+              href="/search?filter=bestsellers"
+              className="btn btn-outline"
+              style={{ display: "inline-flex", alignItems: "center", gap: 8 }}
+            >
+              View All Bestsellers <ArrowRight size={16} />
+            </Link>
           </div>
 
           <div
@@ -1704,7 +1517,6 @@ function Newsletter() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (email) {
-      sfx.click();
       setSubscribed(true);
     }
   };
@@ -1861,22 +1673,18 @@ function Newsletter() {
                     fontSize: 15,
                   }}
                 />
-                <Magnetic strength={0.25}>
-                  <button
-                    type="submit"
-                    onMouseEnter={() => sfx.hover()}
-                    className="btn btn-primary btn-lg"
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 800,
-                      letterSpacing: "0.1em",
-                      textTransform: "uppercase",
-                      width: "100%",
-                    }}
-                  >
-                    Join The Inner Circle →
-                  </button>
-                </Magnetic>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg"
+                  style={{
+                    fontSize: 13,
+                    fontWeight: 800,
+                    letterSpacing: "0.1em",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Join The Inner Circle →
+                </button>
                 <p style={{ fontSize: 11, color: "rgba(0,0,0,0.5)", textAlign: "center" }}>
                   Zero spam. Exclusive drops only. Unsubscribe at any time.
                 </p>
