@@ -74,7 +74,7 @@ export default function HeroSection() {
               width: "100%",
               height: "100%",
               objectFit: "cover",
-              objectPosition: "center 30%",
+              objectPosition: "center top",
             }}
           />
         ) : (
@@ -83,7 +83,7 @@ export default function HeroSection() {
             alt="KLUB — Wear Your Attitude"
             fill
             priority
-            style={{ objectFit: "cover", objectPosition: "center 25%" }}
+            style={{ objectFit: "cover", objectPosition: "center top" }}
             sizes="100vw"
           />
         )}
