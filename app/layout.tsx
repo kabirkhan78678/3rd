@@ -4,11 +4,13 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { UIProvider } from "@/context/UIContext";
+import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import SearchOverlay from "@/components/search/SearchOverlay";
 import CustomCursor from "@/components/layout/CustomCursor";
+import AuthModal from "@/components/auth/AuthModal";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -61,16 +63,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     >
       <body>
         <UIProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <CustomCursor />
-              <Navbar />
-              <main>{children}</main>
-              <Footer />
-              <CartDrawer />
-              <SearchOverlay />
-            </WishlistProvider>
-          </CartProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <CustomCursor />
+                <Navbar />
+                <main>{children}</main>
+                <Footer />
+                <CartDrawer />
+                <SearchOverlay />
+                <AuthModal />
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
         </UIProvider>
       </body>
     </html>
