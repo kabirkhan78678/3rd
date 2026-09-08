@@ -181,7 +181,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const savedUser = localStorage.getItem("klub_user");
       if (savedUser) {
-        setUser(JSON.parse(savedUser));
+        const parsed = JSON.parse(savedUser);
+        // Auto-heal noisy or email-derived names (e.g. "KABIR.CTINFO" -> "Kabir Khan" / "Kabir")
+        if (parsed?.name && (parsed.name.includes(".") || parsed.name.includes("@") || parsed.name === parsed.name.toUpperCase())) {
+          const raw = parsed.name.split("@")[0].replace(/[._-]+/g, " ").trim();
+          const words = raw.split(" ").filter(Boolean);
+          if (words.length > 0) {
+            parsed.name = words.map((w: string) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+          }
+          localStorage.setItem("klub_user", JSON.stringify(parsed));
+        }
+        setUser(parsed);
       } else {
         // Default demo user so testing order history/profile is effortless
         const defaultUser: UserProfile = {
@@ -212,8 +222,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const login = (email: string, name?: string) => {
+    let cleanName = name?.trim();
+    if (!cleanName) {
+      const handle = email.split("@")[0] || "Member";
+      cleanName = handle
+        .replace(/[._-]+/g, " ")
+        .split(" ")
+        .filter(Boolean)
+        .map((p) => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
+        .join(" ");
+    }
     const newUser: UserProfile = {
-      name: name || email.split("@")[0].toUpperCase() || "Member",
+      name: cleanName || "Member",
       email,
       membership: "VIP Gold",
     };

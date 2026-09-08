@@ -19,12 +19,33 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
+function getCleanFirstName(name?: string): string {
+  if (!name) return "Member";
+  const raw = name.split("@")[0].replace(/[._-]+/g, " ").trim();
+  const words = raw.split(" ").filter(Boolean);
+  if (words.length > 0) {
+    const first = words[0];
+    return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+  }
+  return "Member";
+}
+
+function getUserInitials(name?: string): string {
+  if (!name) return "U";
+  const raw = name.split("@")[0].replace(/[._-]+/g, " ").trim();
+  const words = raw.split(" ").filter(Boolean);
+  if (words.length >= 2) {
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+  return (words[0]?.[0] || "U").toUpperCase();
+}
+
 export default function Navbar() {
   const pathname = usePathname();
   const { itemCount, openCart } = useCart();
   const { count: wishlistCount } = useWishlist();
   const { openSearch, toggleMobileMenu, mobileMenuOpen, closeMobileMenu } = useUI();
-  const { user, openAuthModal, logout } = useAuth();
+  const { user, orders, openAuthModal, logout } = useAuth();
 
   const [scrolled, setScrolled] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
@@ -190,8 +211,8 @@ export default function Navbar() {
               {/* Account Dropdown or Login (desktop) */}
               <div ref={accountRef} style={{ position: "relative" }} className="hidden md:block">
                 <motion.button
-                  whileHover={{ scale: 1.08 }}
-                  whileTap={{ scale: 0.92 }}
+                  whileHover={{ scale: 1.04, y: -1 }}
+                  whileTap={{ scale: 0.96 }}
                   onClick={() => {
                     if (user) {
                       setAccountMenuOpen(!accountMenuOpen);
@@ -201,86 +222,216 @@ export default function Navbar() {
                   }}
                   aria-label="Account"
                   style={{
-                    background: user ? "var(--color-surface)" : "none",
-                    border: user ? "1px solid var(--color-border)" : "none",
-                    borderRadius: 999,
-                    padding: user ? "5px 12px 5px 8px" : "8px",
-                    cursor: "pointer",
-                    color: navTextColor,
                     display: "flex",
                     alignItems: "center",
-                    gap: 6,
-                    transition: "all 0.3s ease",
+                    gap: 8,
+                    padding: user ? "4px 12px 4px 5px" : "6px 14px",
+                    borderRadius: 999,
+                    cursor: "pointer",
+                    transition: "all 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
+                    background: user
+                      ? isDarkHero
+                        ? accountMenuOpen
+                          ? "rgba(22, 22, 26, 0.95)"
+                          : "rgba(20, 20, 24, 0.85)"
+                        : accountMenuOpen
+                        ? "rgba(10, 10, 10, 0.12)"
+                        : "rgba(10, 10, 10, 0.06)"
+                      : isDarkHero
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "rgba(10, 10, 10, 0.05)",
+                    backdropFilter: "blur(16px)",
+                    WebkitBackdropFilter: "blur(16px)",
+                    border: accountMenuOpen
+                      ? "1px solid var(--color-accent)"
+                      : isDarkHero
+                      ? "1px solid rgba(255, 255, 255, 0.22)"
+                      : "1px solid rgba(0, 0, 0, 0.12)",
+                    boxShadow: isDarkHero
+                      ? "0 4px 20px rgba(0, 0, 0, 0.45)"
+                      : "0 2px 8px rgba(0, 0, 0, 0.04)",
                   }}
                 >
-                  <User size={18} strokeWidth={1.8} />
-                  {user && (
-                    <span
-                      style={{
-                        fontSize: 12,
-                        fontWeight: 700,
-                        maxWidth: 90,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                        color: isDarkHero ? "#ffffff" : "var(--color-text)",
-                      }}
-                    >
-                      {user.name.split(" ")[0]}
-                    </span>
+                  {user ? (
+                    <>
+                      {/* Avatar Circle */}
+                      <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                        <div
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: "50%",
+                            background: "var(--color-accent)",
+                            color: "#000000",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 11,
+                            fontWeight: 900,
+                            letterSpacing: "-0.02em",
+                            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
+                          }}
+                        >
+                          {getUserInitials(user.name)}
+                        </div>
+                        {/* Active online dot */}
+                        <span
+                          style={{
+                            position: "absolute",
+                            bottom: -1,
+                            right: -1,
+                            width: 7,
+                            height: 7,
+                            borderRadius: "50%",
+                            background: "#00ff88",
+                            border: isDarkHero ? "1.5px solid #141418" : "1.5px solid #ffffff",
+                            boxShadow: "0 0 6px #00ff88",
+                          }}
+                        />
+                      </div>
+
+                      {/* User Name & VIP Tag */}
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, lineHeight: 1 }}>
+                        <span
+                          style={{
+                            fontSize: 13,
+                            fontWeight: 800,
+                            letterSpacing: "0.02em",
+                            color: isDarkHero ? "#ffffff" : "var(--color-text)",
+                            maxWidth: 115,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {getCleanFirstName(user.name)}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: 9,
+                            fontWeight: 900,
+                            background: "var(--color-accent)",
+                            color: "#000000",
+                            padding: "2px 5px",
+                            borderRadius: 4,
+                            letterSpacing: "0.06em",
+                            lineHeight: 1,
+                          }}
+                        >
+                          VIP
+                        </span>
+                      </div>
+
+                      {/* Rotating Chevron */}
+                      <motion.div
+                        animate={{ rotate: accountMenuOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          color: isDarkHero ? "rgba(255,255,255,0.8)" : "rgba(10,10,10,0.6)",
+                          marginLeft: 2,
+                        }}
+                      >
+                        <ChevronDown size={13} strokeWidth={2.5} />
+                      </motion.div>
+                    </>
+                  ) : (
+                    <>
+                      <User size={15} strokeWidth={2} style={{ color: navTextColor }} />
+                      <span
+                        style={{
+                          fontSize: 11,
+                          fontWeight: 800,
+                          letterSpacing: "0.06em",
+                          color: navTextColor,
+                          textTransform: "uppercase",
+                        }}
+                      >
+                        Sign In
+                      </span>
+                    </>
                   )}
-                  {user && <ChevronDown size={12} style={{ opacity: 0.6 }} />}
                 </motion.button>
 
                 {/* Account Menu Dropdown */}
                 <AnimatePresence>
                   {accountMenuOpen && user && (
                     <motion.div
-                      initial={{ opacity: 0, y: 10, scale: 0.96 }}
+                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.96 }}
-                      transition={{ duration: 0.18 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.96 }}
+                      transition={{ duration: 0.18, ease: "easeOut" }}
                       style={{
                         position: "absolute",
                         right: 0,
-                        top: "calc(100% + 12px)",
-                        width: 240,
-                        background: "#0d0d0d",
-                        border: "1px solid rgba(255,255,255,0.15)",
-                        borderRadius: "var(--radius-sm)",
+                        top: "calc(100% + 10px)",
+                        width: 270,
+                        background: "#0f0f12",
+                        border: "1px solid rgba(255, 255, 255, 0.14)",
+                        borderRadius: 14,
                         padding: 16,
-                        boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
+                        boxShadow: "0 24px 50px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255,255,255,0.06)",
                         zIndex: 110,
                         color: "#ffffff",
+                        backdropFilter: "blur(24px)",
                       }}
                     >
                       {/* User Header */}
                       <div
                         style={{
-                          borderBottom: "1px solid rgba(255,255,255,0.1)",
-                          paddingBottom: 12,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 12,
+                          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                          paddingBottom: 14,
                           marginBottom: 12,
                         }}
                       >
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                          <span style={{ fontSize: 14, fontWeight: 800 }}>{user.name}</span>
+                        <div
+                          style={{
+                            width: 42,
+                            height: 42,
+                            borderRadius: "50%",
+                            background: "var(--color-accent)",
+                            color: "#000000",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 14,
+                            fontWeight: 900,
+                            flexShrink: 0,
+                            boxShadow: "0 0 16px rgba(181, 240, 0, 0.35)",
+                          }}
+                        >
+                          {getUserInitials(user.name)}
+                        </div>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 6 }}>
+                            <span style={{ fontSize: 14, fontWeight: 800, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                              {user.name}
+                            </span>
+                          </div>
+                          <p style={{ fontSize: 11, color: "rgba(255, 255, 255, 0.5)", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {user.email}
+                          </p>
                           <span
                             style={{
-                              fontSize: 10,
-                              fontWeight: 800,
+                              display: "inline-block",
+                              marginTop: 5,
+                              fontSize: 9,
+                              fontWeight: 900,
                               textTransform: "uppercase",
-                              padding: "2px 6px",
-                              background: "var(--color-accent)",
-                              color: "#000",
+                              padding: "2px 7px",
+                              background: "rgba(255, 255, 255, 0.1)",
+                              color: "var(--color-accent)",
                               borderRadius: 4,
+                              letterSpacing: "0.06em",
                             }}
                           >
-                            {user.membership}
+                            {user.membership || "VIP Gold"}
                           </span>
                         </div>
-                        <p style={{ fontSize: 12, color: "rgba(255,255,255,0.5)", marginTop: 2, wordBreak: "break-all" }}>
-                          {user.email}
-                        </p>
                       </div>
 
                       {/* Dropdown Links */}
@@ -291,20 +442,36 @@ export default function Navbar() {
                           style={{
                             display: "flex",
                             alignItems: "center",
-                            gap: 10,
-                            padding: "8px 10px",
-                            borderRadius: "var(--radius-sm)",
+                            justifyContent: "space-between",
+                            padding: "9px 12px",
+                            borderRadius: 8,
                             fontSize: 13,
                             fontWeight: 600,
-                            color: "rgba(255,255,255,0.85)",
+                            color: "rgba(255, 255, 255, 0.9)",
                             textDecoration: "none",
                             transition: "background 0.2s",
                           }}
-                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)")}
                           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                         >
-                          <Package size={15} color="var(--color-accent)" />
-                          My Orders
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <Package size={16} color="var(--color-accent)" />
+                            <span>My Orders</span>
+                          </div>
+                          {orders && orders.length > 0 && (
+                            <span
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 800,
+                                background: "var(--color-accent)",
+                                color: "#000",
+                                padding: "1px 6px",
+                                borderRadius: 10,
+                              }}
+                            >
+                              {orders.length}
+                            </span>
+                          )}
                         </Link>
 
                         <Link
@@ -314,24 +481,24 @@ export default function Navbar() {
                             display: "flex",
                             alignItems: "center",
                             gap: 10,
-                            padding: "8px 10px",
-                            borderRadius: "var(--radius-sm)",
+                            padding: "9px 12px",
+                            borderRadius: 8,
                             fontSize: 13,
                             fontWeight: 600,
-                            color: "rgba(255,255,255,0.85)",
+                            color: "rgba(255, 255, 255, 0.9)",
                             textDecoration: "none",
                             transition: "background 0.2s",
                           }}
-                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)")}
                           onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                         >
-                          <ShieldCheck size={15} color="var(--color-accent)" />
-                          Track Package
+                          <ShieldCheck size={16} color="var(--color-accent)" />
+                          <span>Track Package</span>
                         </Link>
                       </div>
 
                       {/* Sign out */}
-                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", marginTop: 12, paddingTop: 8 }}>
+                      <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.1)", marginTop: 10, paddingTop: 6 }}>
                         <button
                           onClick={() => {
                             logout();
@@ -342,18 +509,22 @@ export default function Navbar() {
                             display: "flex",
                             alignItems: "center",
                             gap: 8,
-                            padding: "8px 10px",
+                            padding: "8px 12px",
                             background: "none",
                             border: "none",
-                            color: "var(--color-sale, #ff4d4f)",
-                            fontSize: 13,
+                            borderRadius: 8,
+                            color: "#ff5555",
+                            fontSize: 12,
                             fontWeight: 700,
                             cursor: "pointer",
                             textAlign: "left",
+                            transition: "background 0.2s",
                           }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 85, 85, 0.1)")}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                         >
-                          <LogOut size={15} />
-                          Sign Out
+                          <LogOut size={14} />
+                          <span>Sign Out</span>
                         </button>
                       </div>
                     </motion.div>
@@ -523,38 +694,105 @@ export default function Navbar() {
               {/* User Account Tile in Mobile */}
               <div
                 style={{
-                  background: "rgba(255,255,255,0.06)",
-                  borderRadius: "var(--radius-sm)",
+                  background: "rgba(255, 255, 255, 0.06)",
+                  borderRadius: 12,
                   padding: "16px",
                   marginBottom: 24,
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
                 }}
               >
                 {user ? (
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div>
-                      <p style={{ fontSize: 11, textTransform: "uppercase", color: "var(--color-accent)", fontWeight: 800 }}>
-                        {user.membership} Member
-                      </p>
-                      <p style={{ fontSize: 16, fontWeight: 700, color: "white" }}>{user.name}</p>
+                  <div>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div
+                          style={{
+                            width: 38,
+                            height: 38,
+                            borderRadius: "50%",
+                            background: "var(--color-accent)",
+                            color: "#000",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: 14,
+                            fontWeight: 900,
+                            boxShadow: "0 0 12px rgba(181, 240, 0, 0.3)",
+                          }}
+                        >
+                          {getUserInitials(user.name)}
+                        </div>
+                        <div>
+                          <p style={{ fontSize: 10, textTransform: "uppercase", color: "var(--color-accent)", fontWeight: 800, letterSpacing: "0.05em" }}>
+                            {user.membership || "VIP Member"}
+                          </p>
+                          <p style={{ fontSize: 16, fontWeight: 800, color: "white" }}>{user.name}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          logout();
+                          closeMobileMenu();
+                        }}
+                        style={{
+                          background: "rgba(255, 85, 85, 0.15)",
+                          border: "1px solid rgba(255, 85, 85, 0.3)",
+                          color: "#ff6b6b",
+                          padding: "6px 12px",
+                          fontSize: 11,
+                          fontWeight: 700,
+                          borderRadius: 6,
+                          cursor: "pointer",
+                        }}
+                      >
+                        Sign Out
+                      </button>
                     </div>
-                    <button
-                      onClick={() => {
-                        logout();
-                        closeMobileMenu();
-                      }}
-                      style={{
-                        background: "rgba(255,255,255,0.1)",
-                        border: "none",
-                        color: "#fff",
-                        padding: "6px 12px",
-                        fontSize: 11,
-                        borderRadius: 4,
-                        cursor: "pointer",
-                      }}
-                    >
-                      Sign Out
-                    </button>
+
+                    <div style={{ display: "flex", gap: 8, paddingTop: 10, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                      <Link
+                        href="/orders"
+                        onClick={closeMobileMenu}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 6,
+                          background: "rgba(255,255,255,0.08)",
+                          padding: "8px 12px",
+                          borderRadius: 8,
+                          fontSize: 12,
+                          fontWeight: 700,
+                          color: "#fff",
+                          textDecoration: "none",
+                        }}
+                      >
+                        <Package size={14} color="var(--color-accent)" />
+                        <span>My Orders {orders && orders.length > 0 ? `(${orders.length})` : ""}</span>
+                      </Link>
+                      <Link
+                        href="/track-order"
+                        onClick={closeMobileMenu}
+                        style={{
+                          flex: 1,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 6,
+                          background: "rgba(255,255,255,0.08)",
+                          padding: "8px 12px",
+                          borderRadius: 8,
+                          fontSize: 12,
+                          fontWeight: 700,
+                          color: "#fff",
+                          textDecoration: "none",
+                        }}
+                      >
+                        <ShieldCheck size={14} color="var(--color-accent)" />
+                        <span>Track</span>
+                      </Link>
+                    </div>
                   </div>
                 ) : (
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
