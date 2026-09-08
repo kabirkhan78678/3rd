@@ -9,8 +9,21 @@ import * as THREE from "three";
 import { slideInLeft, slideInRight, VIEWPORT_ONCE } from "@/lib/animations";
 import { environment } from "@/environment";
 
+function cleanHex(c: string): string {
+  if (!c) return "#b5f000";
+  let str = c.trim();
+  if (str.startsWith("#") && str.length === 9) {
+    return str.slice(0, 7);
+  }
+  if (!str.startsWith("#") && (str.length === 6 || str.length === 3)) {
+    return `#${str}`;
+  }
+  return str;
+}
+
 function VaultObject({ color, distort }: { color: string; distort: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const safeColor = cleanHex(color);
 
   useFrame((_, delta) => {
     if (meshRef.current) {
@@ -25,7 +38,7 @@ function VaultObject({ color, distort }: { color: string; distort: number }) {
         <mesh ref={meshRef}>
           <Sphere args={[1.3, 64, 64]}>
             <MeshDistortMaterial
-              color={color}
+              color={safeColor}
               distort={distort}
               speed={2.2}
               roughness={0.08}
@@ -36,7 +49,7 @@ function VaultObject({ color, distort }: { color: string; distort: number }) {
       </Float>
       <ambientLight intensity={0.5} />
       <directionalLight position={[5, 5, 5]} intensity={2.5} color="#ffffff" />
-      <pointLight position={[-4, -3, -2]} intensity={3} color={color} />
+      <pointLight position={[-4, -3, -2]} intensity={3} color={safeColor} />
     </>
   );
 }
