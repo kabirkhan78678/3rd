@@ -81,11 +81,12 @@ export default function AuthModal() {
             position: "relative",
             width: "100%",
             maxWidth: 440,
+            maxHeight: "92vh",
+            overflowY: "auto",
             background: "var(--color-surface)",
             border: "1px solid var(--color-border)",
             borderRadius: "var(--radius-sm)",
             boxShadow: "0 24px 60px rgba(0,0,0,0.6)",
-            overflow: "hidden",
             zIndex: 10,
           }}
         >

@@ -120,7 +120,7 @@ export default function WomenPage() {
           {/* Controls Bar */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 16, marginBottom: 32 }}>
             {/* Category Pills */}
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+            <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1 max-w-full items-center">
               {WOMEN_CATS.map((cat) => (
                 <button
                   key={cat}
@@ -137,6 +137,7 @@ export default function WomenPage() {
                     color: activeCategory === cat ? "#ffffff" : "var(--color-text)",
                     cursor: "pointer",
                     transition: "all 0.2s",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {cat}
@@ -336,11 +337,7 @@ export default function WomenPage() {
               variants={staggerContainer}
               initial="hidden"
               animate="visible"
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-                gap: 24,
-              }}
+              className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6"
             >
               {filtered.map((product, i) => (
                 <ProductCard key={product.id} product={product} index={i} />

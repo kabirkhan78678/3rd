@@ -62,7 +62,7 @@ export default function AnnouncementBar() {
         paddingInline: 16,
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div className="flex items-center justify-center gap-2 sm:gap-3 max-w-full overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
@@ -70,10 +70,10 @@ export default function AnnouncementBar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35, ease: "easeInOut" }}
-            style={{ display: "flex", alignItems: "center", gap: 10 }}
+            className="flex items-center gap-2 truncate"
           >
-            <span style={{ color: "var(--color-accent)", display: "flex", alignItems: "center", gap: 4 }}>
-              <Tag size={12} /> {OFFERS[index].text}
+            <span style={{ color: "var(--color-accent)" }} className="flex items-center gap-1.5 truncate text-[10px] sm:text-xs font-bold">
+              <Tag size={11} className="shrink-0" /> <span className="truncate">{OFFERS[index].text}</span>
             </span>
           </motion.div>
         </AnimatePresence>

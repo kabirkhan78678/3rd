@@ -135,34 +135,22 @@ function TrackOrderContent() {
           >
             {/* Top Bar with Order Status */}
             <div
-              style={{
-                padding: "24px 32px",
-                borderBottom: "1px solid var(--color-border)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: 16,
-                background: "var(--color-background)",
-              }}
+              className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-7 gap-4 border-b border-[var(--color-border)]"
             >
               <div>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-                  <span style={{ fontSize: 20, fontWeight: 900, letterSpacing: "-0.02em" }}>
-                    Order {activeOrder.id}
-                  </span>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4, flexWrap: "wrap" }}>
+                  <h3 style={{ fontSize: 18, fontWeight: 800 }}>Order #{activeOrder.id}</h3>
                   <span
                     style={{
-                      background: "rgba(181, 240, 0, 0.18)",
+                      background: "rgba(181, 240, 0, 0.15)",
+                      color: "var(--color-accent)",
                       border: "1px solid var(--color-accent)",
-                      color: "var(--color-text)",
-                      padding: "4px 12px",
                       borderRadius: 999,
+                      padding: "2px 10px",
                       fontSize: 11,
                       fontWeight: 800,
-                      letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      display: "flex",
+                      display: "inline-flex",
                       alignItems: "center",
                       gap: 6,
                     }}
@@ -220,15 +208,16 @@ function TrackOrderContent() {
               </div>
             </div>
 
-            <div style={{ padding: "36px 32px" }}>
-              {/* 5-Stage Visual Progress Timeline */}
-              <div style={{ marginBottom: 48 }}>
+            <div className="p-4 sm:p-8">
+              {/* 5-Stage Visual Progress Timeline (Touch Scrollable on small screens) */}
+              <div className="overflow-x-auto no-scrollbar pb-3 mb-10">
                 <div
                   style={{
                     display: "grid",
                     gridTemplateColumns: "repeat(5, 1fr)",
                     position: "relative",
                     alignItems: "flex-start",
+                    minWidth: 540,
                   }}
                 >
                   {/* Connecting Line */}

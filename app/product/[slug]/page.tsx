@@ -76,7 +76,7 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
         </nav>
 
         {/* Main layout */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start", paddingBottom: 80 }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start pb-16 lg:pb-20">
 
           {/* ── Gallery ── */}
           <motion.div variants={slideInLeft} initial="hidden" animate="visible">
@@ -153,7 +153,7 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
-            style={{ position: "sticky", top: 100 }}
+            className="lg:sticky lg:top-24"
           >
             <motion.div variants={fadeUp}>
               <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase", color: "var(--color-muted)", marginBottom: 8 }}>
@@ -372,7 +372,7 @@ export default function ProductPage({ params }: { params: Promise<Params> }) {
             <h2 style={{ fontSize: "clamp(24px, 4vw, 40px)", fontWeight: 800, letterSpacing: "-0.03em", marginBottom: 40 }}>
               You May Also Like
             </h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 24 }}>
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
               {related.map((p, i) => <ProductCard key={p.id} product={p} index={i} />)}
             </div>
           </section>

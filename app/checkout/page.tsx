@@ -17,6 +17,7 @@ import {
   ArrowRight,
   Copy,
   ExternalLink,
+  Zap,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth, OrderRecord } from "@/context/AuthContext";
@@ -291,7 +292,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Layout */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 400px", gap: 48, alignItems: "start" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 lg:gap-12 items-start">
           {/* Checkout Steps Form */}
           <form onSubmit={handleSubmit}>
             <AnimatePresence mode="wait">
@@ -302,7 +303,7 @@ export default function CheckoutPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-sm)", padding: 32 }}
+                  className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-sm p-5 sm:p-8"
                 >
                   <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
                     1. Contact & Shipping Information
@@ -352,23 +353,35 @@ export default function CheckoutPage() {
                 </motion.div>
               )}
 
-              {/* STEP 2: SHIPPING METHOD */}
+              {/* STEP 2: SHIPPING */}
               {step === 1 && (
                 <motion.div
                   key="shipping"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-sm)", padding: 32 }}
+                  className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-sm p-5 sm:p-8"
                 >
                   <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
-                    2. Select Delivery Method
+                    2. Select Shipping Speed
                   </h2>
 
-                  <div style={{ display: "flex", flexDirection: "column", gap: 14, marginBottom: 28 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 28 }}>
                     {[
-                      { id: "standard", title: "Standard Dispatch", time: "3–5 business days", price: isFreeShipping ? "FREE" : "$9.99" },
-                      { id: "express", title: "DHL Express Air Priority", time: "1–2 business days", price: isFreeShipping ? "FREE" : "$19.99" },
+                      {
+                        id: "standard",
+                        title: "Standard Global Shipping",
+                        desc: "Delivered in 4-6 business days with tracking",
+                        price: isFreeShipping ? "FREE" : "$9.99",
+                        icon: Truck,
+                      },
+                      {
+                        id: "express",
+                        title: "DHL Express Priority Air",
+                        desc: "Delivered in 2-3 business days worldwide",
+                        price: "$19.99",
+                        icon: Zap,
+                      },
                     ].map((m) => (
                       <label
                         key={m.id}
@@ -376,25 +389,25 @@ export default function CheckoutPage() {
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "space-between",
-                          padding: "16px 20px",
+                          padding: "16px",
                           border: `2px solid ${form.delivery === m.id ? "var(--color-primary)" : "var(--color-border)"}`,
                           borderRadius: "var(--radius-sm)",
-                          background: form.delivery === m.id ? "rgba(181, 240, 0, 0.08)" : "var(--color-background)",
+                          background: form.delivery === m.id ? "var(--color-background)" : "transparent",
                           cursor: "pointer",
                           transition: "all 0.2s",
                         }}
                       >
-                        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                           <input
                             type="radio"
                             name="delivery"
+                            value={m.id}
                             checked={form.delivery === m.id}
-                            onChange={() => update("delivery", m.id)}
-                            style={{ accentColor: "var(--color-accent)" }}
+                            onChange={(e) => update("delivery", e.target.value)}
                           />
                           <div>
-                            <span style={{ fontWeight: 800, fontSize: 14, display: "block" }}>{m.title}</span>
-                            <span style={{ fontSize: 12, color: "var(--color-muted)" }}>{m.time}</span>
+                            <span style={{ fontWeight: 700, fontSize: 14, display: "block" }}>{m.title}</span>
+                            <span style={{ fontSize: 12, color: "var(--color-muted)" }}>{m.desc}</span>
                           </div>
                         </div>
                         <span style={{ fontWeight: 800, fontSize: 14, color: m.price === "FREE" ? "var(--color-accent-2, #7ab300)" : "var(--color-text)" }}>
@@ -422,14 +435,14 @@ export default function CheckoutPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  style={{ background: "var(--color-surface)", border: "1px solid var(--color-border)", borderRadius: "var(--radius-sm)", padding: 32 }}
+                  className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-sm p-5 sm:p-8"
                 >
                   <h2 style={{ fontSize: 20, fontWeight: 800, marginBottom: 20, display: "flex", alignItems: "center", gap: 8 }}>
                     3. Secure Payment Gateway
                   </h2>
 
                   {/* Payment Method Selector Tabs */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8, marginBottom: 24 }}>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 mb-6">
                     {[
                       { id: "card", label: "Card", icon: CreditCard },
                       { id: "upi", label: "UPI / QR", icon: QrCode },

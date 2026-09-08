@@ -734,7 +734,7 @@ button { cursor: pointer; font-family: inherit; }
 }
 
 /* ─────────────────────────────────────────────
-   MOBILE MENU
+   MOBILE MENU & UTILITIES
    ───────────────────────────────────────────── */
 .mobile-menu {
   position: fixed;
@@ -744,7 +744,17 @@ button { cursor: pointer; font-family: inherit; }
   z-index: var(--z-overlay);
   display: flex;
   flex-direction: column;
-  padding: 32px;
+  padding: 24px 20px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* ─────────────────────────────────────────────

@@ -69,8 +69,8 @@ export default function OrdersPage() {
           </div>
         </motion.div>
 
-        {/* Status Filter Tabs */}
-        <div style={{ display: "flex", gap: 8, marginBottom: 28 }}>
+        {/* Status Filter Tabs (Horizontal scroll on mobile) */}
+        <div className="flex gap-2 mb-6 overflow-x-auto no-scrollbar pb-1">
           {[
             { id: "all", label: `All Orders (${orders.length})` },
             { id: "active", label: `In Transit (${orders.filter((o) => o.status !== "Delivered").length})` },
@@ -91,6 +91,7 @@ export default function OrdersPage() {
                 color: filter === tab.id ? "#ffffff" : "var(--color-muted)",
                 cursor: "pointer",
                 transition: "all 0.2s",
+                whiteSpace: "nowrap",
               }}
             >
               {tab.label}
@@ -119,16 +120,7 @@ export default function OrdersPage() {
               >
                 {/* Order Item Header */}
                 <div
-                  style={{
-                    padding: "18px 24px",
-                    background: "var(--color-background)",
-                    borderBottom: "1px solid var(--color-border)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    flexWrap: "wrap",
-                    gap: 16,
-                  }}
+                  className="p-4 sm:p-5 bg-[var(--color-background)] border-b border-[var(--color-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                 >
                   <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
                     <div>
