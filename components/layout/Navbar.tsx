@@ -83,8 +83,8 @@ export default function Navbar() {
     };
   }, [mobileMenuOpen]);
 
-  const isDarkHero = !scrolled && pathname === "/";
-  const navTextColor = isDarkHero ? "#ffffff" : "var(--color-text)";
+  const isDarkHero = false;
+  const navTextColor = "var(--color-text, #0a1315)";
 
   return (
     <>
@@ -115,7 +115,7 @@ export default function Navbar() {
             scrolled
               ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-[var(--color-border)]"
               : pathname === "/"
-              ? "bg-gradient-to-b from-black/85 via-black/40 to-transparent border-b border-transparent"
+              ? "bg-white/70 backdrop-blur-md border-b border-black/5"
               : "bg-white/95 backdrop-blur-md border-b border-[var(--color-border)]"
           }`}
           style={{

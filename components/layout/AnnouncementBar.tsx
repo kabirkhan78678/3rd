@@ -45,8 +45,8 @@ export default function AnnouncementBar() {
   return (
     <div
       style={{
-        background: "var(--color-primary)",
-        color: "#ffffff",
+        background: "var(--color-surface, #f5f5f7)",
+        color: "var(--color-text, #0a1315)",
         height: 38,
         display: "flex",
         alignItems: "center",
@@ -57,7 +57,7 @@ export default function AnnouncementBar() {
         textTransform: "uppercase",
         position: "relative",
         zIndex: 101,
-        borderBottom: "1px solid rgba(255,255,255,0.1)",
+        borderBottom: "1px solid var(--color-border, #e5e7eb)",
         overflow: "hidden",
         paddingInline: 8,
       }}
@@ -72,8 +72,8 @@ export default function AnnouncementBar() {
             transition={{ duration: 0.35, ease: "easeInOut" }}
             className="flex items-center gap-2 truncate"
           >
-            <span style={{ color: "var(--color-accent)" }} className="flex items-center gap-1.5 truncate text-[10px] sm:text-xs font-bold">
-              <Tag size={11} className="shrink-0" /> <span className="truncate">{OFFERS[index].text}</span>
+            <span style={{ color: "var(--color-text, #0a1315)" }} className="flex items-center gap-1.5 truncate text-[10px] sm:text-xs font-bold">
+              <Tag size={12} className="shrink-0" style={{ color: "var(--color-accent, #00c2cb)" }} /> <span className="truncate">{OFFERS[index].text}</span>
             </span>
           </motion.div>
         </AnimatePresence>
@@ -81,9 +81,9 @@ export default function AnnouncementBar() {
         <button
           onClick={copyCurrentCode}
           style={{
-            background: "var(--color-accent-subtle, rgba(0, 194, 203, 0.15))",
-            border: "1px solid var(--color-accent)",
-            color: "var(--color-accent)",
+            background: "var(--color-accent, #00c2cb)",
+            border: "1px solid var(--color-accent, #00c2cb)",
+            color: "#0a1315",
             borderRadius: 999,
             padding: "2px 8px",
             fontSize: 9,
@@ -93,6 +93,7 @@ export default function AnnouncementBar() {
             alignItems: "center",
             gap: 4,
             transition: "all 0.2s",
+            boxShadow: "0 2px 8px var(--color-accent-glow, rgba(0, 194, 203, 0.25))",
           }}
           title="Copy discount code"
         >
@@ -111,11 +112,12 @@ export default function AnnouncementBar() {
           href="/search?filter=new"
           style={{
             fontSize: 10,
-            color: "rgba(255,255,255,0.6)",
+            color: "var(--color-muted, #6b7280)",
             display: "inline-flex",
             alignItems: "center",
             textDecoration: "underline",
             textUnderlineOffset: 2,
+            fontWeight: 600,
           }}
           className="hidden md:inline-flex"
         >
