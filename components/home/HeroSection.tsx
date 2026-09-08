@@ -131,9 +131,9 @@ export default function HeroSection() {
         }}
       />
 
-      {/* Media Controls Pill (Responsive positioning) */}
+      {/* Media Controls Pill (Cleanly positioned below navbar) */}
       <div
-        className="absolute top-20 md:top-24 right-4 md:right-6 z-10 flex items-center gap-2 bg-black/60 backdrop-blur-md p-1.5 rounded-full border border-white/15"
+        className="absolute top-[124px] md:top-[132px] right-4 md:right-8 z-20 flex items-center gap-2 bg-black/65 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-xl"
       >
         {/* Mode Switcher */}
         <button

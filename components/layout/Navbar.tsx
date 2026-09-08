@@ -113,7 +113,7 @@ export default function Navbar() {
             scrolled
               ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-[var(--color-border)]"
               : pathname === "/"
-              ? "bg-gradient-to-b from-black/85 via-black/40 to-transparent border-b border-white/10"
+              ? "bg-gradient-to-b from-black/85 via-black/40 to-transparent border-b border-transparent"
               : "bg-white/95 backdrop-blur-md border-b border-[var(--color-border)]"
           }`}
           style={{
