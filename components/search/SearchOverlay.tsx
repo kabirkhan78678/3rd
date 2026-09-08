@@ -147,7 +147,7 @@ export default function SearchOverlay() {
                   animate="visible"
                   className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4"
                 >
-                  {results.map((product, i) => (
+                  {results.map((product) => (
                     <motion.div key={product.id} variants={fadeUp}>
                       <Link
                         href={`/product/${product.slug}`}

@@ -209,7 +209,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       } else {
         localStorage.setItem("klub_orders", JSON.stringify(SAMPLE_ORDERS));
       }
-    } catch (_) {}
+    } catch {}
   }, []);
 
   const openAuthModal = (tab: "login" | "signup" = "login") => {
@@ -240,7 +240,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(newUser);
     try {
       localStorage.setItem("klub_user", JSON.stringify(newUser));
-    } catch (_) {}
+    } catch {}
     closeAuthModal();
   };
 
@@ -252,7 +252,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     try {
       localStorage.removeItem("klub_user");
-    } catch (_) {}
+    } catch {}
   };
 
   const addOrder = (order: OrderRecord) => {
@@ -260,7 +260,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const updated = [order, ...prev];
       try {
         localStorage.setItem("klub_orders", JSON.stringify(updated));
-      } catch (_) {}
+      } catch {}
       return updated;
     });
   };

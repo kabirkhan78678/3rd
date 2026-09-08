@@ -1,14 +1,14 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import { notFound, useRouter } from "next/navigation";
+import { notFound } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, ShoppingBag, ChevronDown, ChevronLeft, ChevronRight, Star, Truck, RotateCcw, Shield } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
-import { getProductBySlug, getRelatedProducts, formatPrice, getDiscountPercent, products } from "@/data/products";
+import { getProductBySlug, getRelatedProducts, formatPrice, getDiscountPercent } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
-import { staggerContainer, fadeUp, slideInLeft, slideInRight, scaleIn, VIEWPORT_ONCE } from "@/lib/animations";
+import { staggerContainer, fadeUp, slideInLeft } from "@/lib/animations";
 import Link from "next/link";
 import { use } from "react";
 

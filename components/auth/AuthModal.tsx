@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Lock, Mail, User, ArrowRight, CheckCircle2, ShieldCheck, Zap } from "lucide-react";
+import { X, Lock, Mail, User, ArrowRight, ShieldCheck, Zap } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 export default function AuthModal() {

@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Tag, Sparkles, Copy, Check, ChevronRight } from "lucide-react";
+import { Tag, Copy, Check, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 const OFFERS = [
@@ -39,7 +39,7 @@ export default function AnnouncementBar() {
       navigator.clipboard.writeText(currentCode);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (_) {}
+    } catch {}
   };
 
   return (

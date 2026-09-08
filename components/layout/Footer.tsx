@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Globe, X, Play, ArrowRight } from "lucide-react";
-import { staggerContainer, fadeUp } from "@/lib/animations";
 
 const SHOP_LINKS = [
   { label: "Men", href: "/men" },

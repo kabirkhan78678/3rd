@@ -190,7 +190,9 @@ export default function MobileAccountSheet({ isOpen, onClose }: MobileAccountShe
                 <Package size={20} color="var(--color-accent)" />
               </Link>
 
-              <div
+              <Link
+                href="/wishlist"
+                onClick={onClose}
                 style={{
                   background: "rgba(255,255,255,0.04)",
                   border: "1px solid rgba(255,255,255,0.08)",
@@ -199,6 +201,8 @@ export default function MobileAccountSheet({ isOpen, onClose }: MobileAccountShe
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
+                  textDecoration: "none",
+                  color: "#fff",
                 }}
               >
                 <div>
@@ -206,11 +210,47 @@ export default function MobileAccountSheet({ isOpen, onClose }: MobileAccountShe
                   <p style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>{wishlistCount}</p>
                 </div>
                 <Heart size={20} color="var(--color-sale, #ff3b5c)" />
-              </div>
+              </Link>
             </div>
 
             {/* Navigation Actions */}
             <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 20 }}>
+              <Link
+                href="/wishlist"
+                onClick={onClose}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "14px 16px",
+                  background: "rgba(255,255,255,0.04)",
+                  borderRadius: 10,
+                  textDecoration: "none",
+                  color: "#fff",
+                  fontWeight: 600,
+                  fontSize: 14,
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <Heart size={18} color="var(--color-sale, #ff3b5c)" />
+                  <span>Wishlist & Saved Grails</span>
+                </div>
+                {wishlistCount > 0 && (
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 800,
+                      background: "var(--color-sale, #ff3b5c)",
+                      color: "#fff",
+                      padding: "2px 8px",
+                      borderRadius: 999,
+                    }}
+                  >
+                    {wishlistCount}
+                  </span>
+                )}
+              </Link>
+
               <Link
                 href="/orders"
                 onClick={onClose}

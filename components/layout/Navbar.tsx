@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Search, Heart, Menu, X, User, Package, LogOut, ChevronDown, ShieldCheck, Sparkles } from "lucide-react";
+import { ShoppingBag, Search, Heart, Menu, X, User, Package, LogOut, ChevronDown, ShieldCheck } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useUI } from "@/context/UIContext";
@@ -477,6 +477,44 @@ export default function Navbar() {
                         </Link>
 
                         <Link
+                          href="/wishlist"
+                          onClick={() => setAccountMenuOpen(false)}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            padding: "9px 12px",
+                            borderRadius: 8,
+                            fontSize: 13,
+                            fontWeight: 600,
+                            color: "rgba(255, 255, 255, 0.9)",
+                            textDecoration: "none",
+                            transition: "background 0.2s",
+                          }}
+                          onMouseEnter={(e) => (e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)")}
+                          onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                            <Heart size={16} color="var(--color-sale, #ff3b5c)" />
+                            <span>My Wishlist</span>
+                          </div>
+                          {wishlistCount > 0 && (
+                            <span
+                              style={{
+                                fontSize: 10,
+                                fontWeight: 800,
+                                background: "var(--color-sale, #ff3b5c)",
+                                color: "#fff",
+                                padding: "1px 6px",
+                                borderRadius: 10,
+                              }}
+                            >
+                              {wishlistCount}
+                            </span>
+                          )}
+                        </Link>
+
+                        <Link
                           href="/track-order"
                           onClick={() => setAccountMenuOpen(false)}
                           style={{
@@ -607,45 +645,47 @@ export default function Navbar() {
               </motion.button>
 
               {/* Wishlist */}
-              <motion.button
-                whileHover={{ scale: 1.08 }}
-                whileTap={{ scale: 0.92 }}
-                aria-label={`Wishlist (${wishlistCount})`}
-                className="hidden md:flex"
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: "8px",
-                  cursor: "pointer",
-                  color: navTextColor,
-                  alignItems: "center",
-                  position: "relative",
-                  transition: "color 0.3s ease",
-                }}
-              >
-                <Heart size={20} strokeWidth={1.8} />
-                {wishlistCount > 0 && (
-                  <span
-                    style={{
-                      position: "absolute",
-                      top: 2,
-                      right: 2,
-                      width: 16,
-                      height: 16,
-                      borderRadius: "50%",
-                      background: "var(--color-sale)",
-                      color: "white",
-                      fontSize: 9,
-                      fontWeight: 700,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    {wishlistCount}
-                  </span>
-                )}
-              </motion.button>
+              <Link href="/wishlist" style={{ textDecoration: "none" }} className="hidden md:flex">
+                <motion.div
+                  whileHover={{ scale: 1.08 }}
+                  whileTap={{ scale: 0.92 }}
+                  aria-label={`Wishlist (${wishlistCount})`}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: "8px",
+                    cursor: "pointer",
+                    color: navTextColor,
+                    display: "flex",
+                    alignItems: "center",
+                    position: "relative",
+                    transition: "color 0.3s ease",
+                  }}
+                >
+                  <Heart size={20} strokeWidth={1.8} />
+                  {wishlistCount > 0 && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: 2,
+                        right: 2,
+                        width: 16,
+                        height: 16,
+                        borderRadius: "50%",
+                        background: "var(--color-sale)",
+                        color: "white",
+                        fontSize: 9,
+                        fontWeight: 700,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {wishlistCount}
+                    </span>
+                  )}
+                </motion.div>
+              </Link>
 
               {/* Cart */}
               <motion.button
@@ -925,6 +965,42 @@ export default function Navbar() {
                     </Link>
                   </motion.div>
                 ))}
+
+                <motion.div variants={fadeUp}>
+                  <Link
+                    href="/wishlist"
+                    onClick={closeMobileMenu}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      fontSize: "clamp(24px, 5vw, 42px)",
+                      fontWeight: 700,
+                      color: "white",
+                      paddingBlock: 12,
+                      letterSpacing: "-0.02em",
+                      lineHeight: 1.2,
+                      borderBottom: "1px solid rgba(255,255,255,0.1)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <span>Wishlist</span>
+                    {wishlistCount > 0 && (
+                      <span
+                        style={{
+                          fontSize: 12,
+                          fontWeight: 800,
+                          background: "var(--color-sale, #ff3b5c)",
+                          color: "#fff",
+                          padding: "2px 8px",
+                          borderRadius: 999,
+                        }}
+                      >
+                        {wishlistCount}
+                      </span>
+                    )}
+                  </Link>
+                </motion.div>
 
                 {user && (
                   <motion.div variants={fadeUp}>

@@ -15,7 +15,7 @@ interface ProductCardProps {
   variant?: "default" | "compact" | "large";
 }
 
-export default function ProductCard({ product, index = 0, variant = "default" }: ProductCardProps) {
+export default function ProductCard({ product, index = 0, variant: _variant = "default" }: ProductCardProps) {
   const { addItem } = useCart();
   const { toggle, isWishlisted } = useWishlist();
   const [imgIndex, setImgIndex] = useState(0);

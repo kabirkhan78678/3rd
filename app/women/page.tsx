@@ -2,10 +2,10 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { SlidersHorizontal, X, ChevronDown, Check, ArrowRight } from "lucide-react";
+import { SlidersHorizontal, X, ChevronDown } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
-import { getProductsByCategory, Product } from "@/data/products";
-import { staggerContainer, fadeUp, VIEWPORT_ONCE } from "@/lib/animations";
+import { getProductsByCategory } from "@/data/products";
+import { staggerContainer, fadeUp } from "@/lib/animations";
 
 const WOMEN_CATS = ["All", "Hoodies", "Dresses", "Jackets", "Tops", "Pants", "Skirts & Shorts"];
 const SIZES = ["All", "XS", "S", "M", "L", "XL"];

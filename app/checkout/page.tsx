@@ -1,27 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import {
   Check,
   ChevronRight,
-  Lock,
   CreditCard,
   Truck,
   QrCode,
   Smartphone,
   Banknote,
   Tag,
-  ShieldCheck,
-  ArrowRight,
-  Copy,
-  ExternalLink,
   Zap,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth, OrderRecord } from "@/context/AuthContext";
-import { fadeUp, staggerContainer } from "@/lib/animations";
 
 const STEPS = ["Contact", "Shipping", "Payment"];
 

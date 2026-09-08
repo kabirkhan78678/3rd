@@ -11,15 +11,13 @@ import {
   CheckCircle2,
   Clock,
   MapPin,
-  ArrowRight,
   Copy,
   Check,
-  ShieldCheck,
   AlertCircle,
   ExternalLink,
 } from "lucide-react";
 import { useAuth, OrderRecord } from "@/context/AuthContext";
-import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations";
+import { fadeUp } from "@/lib/animations";
 
 function TrackOrderContent() {
   const searchParams = useSearchParams();
@@ -37,7 +35,7 @@ function TrackOrderContent() {
     const found = getOrderById(idToSearch) || orders[0] || null;
     setActiveOrder(found);
     setSearched(true);
-  }, [queryId, orders]);
+  }, [queryId, orders, getOrderById]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -242,7 +240,7 @@ function TrackOrderContent() {
                     />
                   </div>
 
-                  {stages.map((st, i) => (
+                  {stages.map((st) => (
                     <div
                       key={st.title}
                       style={{

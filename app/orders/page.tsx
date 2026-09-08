@@ -4,19 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  Package,
   Truck,
   ArrowRight,
-  CheckCircle2,
   Calendar,
-  Clock,
-  ChevronRight,
-  Receipt,
-  Download,
   ShoppingBag,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { fadeUp, staggerContainer, VIEWPORT_ONCE } from "@/lib/animations";
+import { fadeUp, VIEWPORT_ONCE } from "@/lib/animations";
 
 export default function OrdersPage() {
   const { user, orders, openAuthModal } = useAuth();

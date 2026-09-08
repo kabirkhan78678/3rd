@@ -1,13 +1,12 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Search as SearchIcon, SlidersHorizontal, X } from "lucide-react";
+import { Search as SearchIcon, X } from "lucide-react";
 import ProductCard from "@/components/product/ProductCard";
 import { products, searchProducts, Product } from "@/data/products";
-import { staggerContainer, fadeUp } from "@/lib/animations";
+import { staggerContainer } from "@/lib/animations";
 
 function SearchContent() {
   const params = useSearchParams();

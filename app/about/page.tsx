@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { staggerContainer, fadeUp, slideInLeft, slideInRight, scaleIn, VIEWPORT_ONCE } from "@/lib/animations";
+import { staggerContainer, fadeUp, slideInLeft, slideInRight, VIEWPORT_ONCE } from "@/lib/animations";
 
 export default function AboutPage() {
   const heroRef = useRef<HTMLElement>(null);
@@ -39,7 +39,7 @@ export default function AboutPage() {
       {/* ─── BRAND STORY ─── */}
       <section className="section">
         <div className="container">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div variants={slideInLeft} initial="hidden" whileInView="visible" viewport={VIEWPORT_ONCE}>
               <span className="section-eyebrow">The Beginning</span>
               <h2 style={{ fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.05, marginBottom: 24 }}>
@@ -78,7 +78,7 @@ export default function AboutPage() {
             initial="hidden"
             whileInView="visible"
             viewport={VIEWPORT_ONCE}
-            style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 40, textAlign: "center" }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-center"
           >
             {[
               { value: "2021", label: "Founded" },
@@ -113,7 +113,7 @@ export default function AboutPage() {
             <span style={{ color: "var(--color-accent)" }}>OUR OWN</span><br />
             CYCLE.
           </motion.h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40, textAlign: "left" }}>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 text-left">
             {[
               { title: "Craft First", desc: "Every garment starts with the finest raw materials. We refuse to compromise on fabric quality — ever." },
               { title: "Purpose-Built", desc: "Each piece is designed with intention. No fillers. No padding. Just clothing that earns its place in your wardrobe." },
@@ -139,8 +139,8 @@ export default function AboutPage() {
             </h2>
           </motion.div>
 
-          <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", left: "50%", top: 0, bottom: 0, width: 1, background: "var(--color-border)", transform: "translateX(-50%)" }} />
+          <div className="relative max-w-2xl mx-auto">
+            <div className="absolute left-3.5 sm:left-1/2 top-0 bottom-0 w-0.5 bg-[var(--color-border)] sm:-translate-x-1/2" />
             {[
               { year: "2021", title: "The Beginning", desc: "Three friends, one vision, and a lot of fabric swatches. KLUB takes shape in East London." },
               { year: "2022", title: "First Drop", desc: "Our debut collection — 6 pieces — sells out in 48 hours. The community responds." },
@@ -155,21 +155,40 @@ export default function AboutPage() {
                 whileInView="visible"
                 viewport={VIEWPORT_ONCE}
                 transition={{ delay: i * 0.1 }}
-                style={{
-                  display: "flex",
-                  gap: 40,
-                  marginBottom: 48,
-                  flexDirection: i % 2 === 0 ? "row" : "row-reverse",
-                  alignItems: "center",
-                }}
+                className={`relative flex items-start sm:items-center gap-4 sm:gap-10 mb-10 sm:mb-12 ${
+                  i % 2 === 0 ? "sm:flex-row" : "sm:flex-row-reverse"
+                }`}
               >
-                <div style={{ flex: 1, textAlign: i % 2 === 0 ? "right" : "left" }}>
-                  <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", color: "var(--color-muted)", textTransform: "uppercase", marginBottom: 8 }}>{year}</p>
-                  <h3 style={{ fontSize: 22, fontWeight: 700, marginBottom: 8 }}>{title}</h3>
-                  <p style={{ color: "var(--color-muted)", fontSize: 15, lineHeight: 1.6, maxWidth: 300, ...(i % 2 === 0 ? { marginLeft: "auto" } : {}) }}>{desc}</p>
+                <div className={`hidden sm:block flex-1 ${i % 2 === 0 ? "text-right" : "text-left"}`}>
+                  {i % 2 === 0 ? (
+                    <div>
+                      <p className="text-[11px] font-bold tracking-[0.15em] text-[var(--color-muted)] uppercase mb-1">{year}</p>
+                      <h3 className="text-xl font-bold mb-1">{title}</h3>
+                      <p className="text-[var(--color-muted)] text-sm leading-relaxed max-w-[280px] ml-auto">{desc}</p>
+                    </div>
+                  ) : null}
                 </div>
-                <div style={{ width: 16, height: 16, borderRadius: "50%", background: "var(--color-accent)", border: "3px solid var(--color-primary)", flexShrink: 0, zIndex: 1 }} />
-                <div style={{ flex: 1 }} />
+
+                <div className="w-7 h-7 rounded-full bg-[var(--color-accent)] border-4 border-[var(--color-primary)] flex-shrink-0 z-10 shadow-sm" />
+
+                <div className="flex-1 text-left">
+                  {/* Mobile content (always right of dot) */}
+                  <div className="block sm:hidden">
+                    <p className="text-[11px] font-bold tracking-[0.15em] text-[var(--color-muted)] uppercase mb-1">{year}</p>
+                    <h3 className="text-lg font-bold mb-1">{title}</h3>
+                    <p className="text-[var(--color-muted)] text-sm leading-relaxed">{desc}</p>
+                  </div>
+                  {/* Desktop content (when row-reverse) */}
+                  <div className="hidden sm:block">
+                    {i % 2 !== 0 ? (
+                      <div>
+                        <p className="text-[11px] font-bold tracking-[0.15em] text-[var(--color-muted)] uppercase mb-1">{year}</p>
+                        <h3 className="text-xl font-bold mb-1">{title}</h3>
+                        <p className="text-[var(--color-muted)] text-sm leading-relaxed max-w-[280px]">{desc}</p>
+                      </div>
+                    ) : null}
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>

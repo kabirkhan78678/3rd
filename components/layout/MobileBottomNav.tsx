@@ -3,10 +3,9 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, Compass, ShoppingBag, Package, User, Heart } from "lucide-react";
+import { Home, Compass, ShoppingBag, Package, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { useWishlist } from "@/context/WishlistContext";
 import MobileAccountSheet from "./MobileAccountSheet";
 
 function getCleanFirstName(name?: string): string {
@@ -34,7 +33,6 @@ export default function MobileBottomNav() {
   const pathname = usePathname();
   const { itemCount, openCart } = useCart();
   const { user, orders, openAuthModal } = useAuth();
-  const { count: wishlistCount } = useWishlist();
   const [accountSheetOpen, setAccountSheetOpen] = useState(false);
 
   // If inside full-screen checkout, hide bottom nav to avoid checkout distractions
@@ -47,39 +45,6 @@ export default function MobileBottomNav() {
       openAuthModal("login");
     }
   };
-
-  const navItems = [
-    {
-      id: "home",
-      label: "Home",
-      icon: Home,
-      href: "/",
-      isActive: pathname === "/",
-    },
-    {
-      id: "drops",
-      label: "Shop",
-      icon: Compass,
-      href: "/search?filter=new",
-      isActive: pathname === "/search" || pathname === "/men" || pathname === "/women",
-    },
-    {
-      id: "cart",
-      label: "Bag",
-      icon: ShoppingBag,
-      onClick: openCart,
-      badge: itemCount,
-      isActive: false,
-    },
-    {
-      id: "orders",
-      label: "Orders",
-      icon: Package,
-      href: "/orders",
-      badge: orders && orders.length > 0 ? orders.length : undefined,
-      isActive: pathname === "/orders" || pathname === "/track-order",
-    },
-  ];
 
   return (
     <>
