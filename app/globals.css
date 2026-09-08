@@ -296,6 +296,15 @@ button { cursor: pointer; font-family: inherit; }
   transform: translateY(0);
 }
 
+@media (hover: none) {
+  .product-card .card-actions {
+    transform: translateY(0);
+    background: rgba(10, 10, 10, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 8px 10px;
+  }
+}
+
 .product-card .card-image img {
   transition: transform 0.7s cubic-bezier(0.25, 0.1, 0.25, 1);
 }

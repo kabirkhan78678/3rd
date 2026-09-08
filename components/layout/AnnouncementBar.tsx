@@ -59,7 +59,7 @@ export default function AnnouncementBar() {
         zIndex: 101,
         borderBottom: "1px solid rgba(255,255,255,0.1)",
         overflow: "hidden",
-        paddingInline: 16,
+        paddingInline: 8,
       }}
     >
       <div className="flex items-center justify-center gap-2 sm:gap-3 max-w-full overflow-hidden">

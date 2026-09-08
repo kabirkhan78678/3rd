@@ -52,66 +52,75 @@ export default function SearchOverlay() {
           aria-label="Search"
         >
           {/* Header */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              padding: "24px 40px",
-              borderBottom: "1px solid var(--color-border)",
-            }}
-          >
+          <div className="flex items-center justify-between px-4 sm:px-6 md:px-10 py-4 sm:py-5 border-b border-[var(--color-border)]">
             <span className="font-display" style={{ fontSize: 20, letterSpacing: "0.15em" }}>
               KLUB
             </span>
             <motion.button
               onClick={closeSearch}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text)", display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-text)", display: "flex", alignItems: "center", gap: 6, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}
             >
               Close <X size={18} />
             </motion.button>
           </div>
 
           {/* Search input */}
-          <div style={{ padding: "40px 40px 24px", borderBottom: "2px solid var(--color-border)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 16, maxWidth: 900 }}>
-              <Search size={32} strokeWidth={1.5} style={{ color: "var(--color-muted-light)", flexShrink: 0 }} />
+          <div className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 border-b-2 border-[var(--color-border)]">
+            <div style={{ display: "flex", alignItems: "center", gap: 12, maxWidth: 900 }}>
+              <Search size={24} className="sm:w-8 sm:h-8" strokeWidth={1.8} style={{ color: "var(--color-muted-light)", flexShrink: 0 }} />
               <input
                 ref={inputRef}
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search for styles, drops, vibes..."
-                className="search-input-large"
+                className="search-input-large text-lg sm:text-2xl md:text-3xl"
               />
               {query && (
                 <button
                   onClick={() => setQuery("")}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-muted)" }}
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--color-muted)", padding: 4 }}
                 >
-                  <X size={20} />
+                  <X size={18} />
                 </button>
               )}
             </div>
           </div>
 
           {/* Content */}
-          <div style={{ flex: 1, overflowY: "auto", padding: "32px 40px" }}>
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 md:px-10 py-6 sm:py-8">
             {/* Popular searches (show when no query) */}
             {!query && (
-              <motion.div variants={fadeUp} initial="hidden" animate="visible" style={{ marginBottom: 40 }}>
-                <p style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-muted)", marginBottom: 16 }}>
-                  <TrendingUp size={14} /> Popular Searches
+              <motion.div variants={fadeUp} initial="hidden" animate="visible" style={{ marginBottom: 32 }}>
+                <p style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-muted)", marginBottom: 12 }}>
+                  <TrendingUp size={14} color="var(--color-accent)" /> Trending Searches
                 </p>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                   {POPULAR_SEARCHES.map((term) => (
                     <button
                       key={term}
                       onClick={() => setQuery(term)}
-                      className="filter-chip"
-                      style={{ borderRadius: "var(--radius-full)" }}
+                      style={{
+                        background: "var(--color-surface)",
+                        border: "1px solid var(--color-border)",
+                        borderRadius: "var(--radius-full)",
+                        padding: "6px 14px",
+                        fontSize: 12,
+                        fontWeight: 600,
+                        cursor: "pointer",
+                        color: "var(--color-text)",
+                        transition: "all var(--transition-fast)",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = "var(--color-accent)";
+                        e.currentTarget.style.background = "var(--color-surface-2)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = "var(--color-border)";
+                        e.currentTarget.style.background = "var(--color-surface)";
+                      }}
                     >
                       {term}
                     </button>
@@ -122,25 +131,21 @@ export default function SearchOverlay() {
 
             {/* Results */}
             <div>
-              <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-muted)", marginBottom: 20 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-muted)", marginBottom: 16 }}>
                 {query ? `${results.length} Result${results.length !== 1 ? "s" : ""} for "${query}"` : "Featured Products"}
               </p>
 
               {results.length === 0 && query ? (
                 <div style={{ textAlign: "center", paddingTop: 40 }}>
-                  <p style={{ fontWeight: 600, fontSize: 20, marginBottom: 8 }}>No results found</p>
-                  <p style={{ color: "var(--color-muted)" }}>Try a different search term</p>
+                  <p style={{ fontWeight: 600, fontSize: 18, marginBottom: 8 }}>No results found</p>
+                  <p style={{ color: "var(--color-muted)", fontSize: 14 }}>Try searching for &quot;hoodie&quot;, &quot;cargo&quot;, or &quot;jacket&quot;</p>
                 </div>
               ) : (
                 <motion.div
                   variants={staggerContainer}
                   initial="hidden"
                   animate="visible"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))",
-                    gap: 16,
-                  }}
+                  className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4"
                 >
                   {results.map((product, i) => (
                     <motion.div key={product.id} variants={fadeUp}>

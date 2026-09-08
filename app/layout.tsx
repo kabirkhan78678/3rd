@@ -10,6 +10,7 @@ import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/cart/CartDrawer";
 import SearchOverlay from "@/components/search/SearchOverlay";
 import CustomCursor from "@/components/layout/CustomCursor";
+import MobileBottomNav from "@/components/layout/MobileBottomNav";
 import AuthModal from "@/components/auth/AuthModal";
 import { getCssThemeVariables, environment } from "@/environment";
 
@@ -75,8 +76,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <WishlistProvider>
                 <CustomCursor />
                 <Navbar />
-                <main>{children}</main>
+                <main className="pb-16 md:pb-0">{children}</main>
                 <Footer />
+                <MobileBottomNav />
                 <CartDrawer />
                 <SearchOverlay />
                 <AuthModal />

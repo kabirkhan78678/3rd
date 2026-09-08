@@ -133,7 +133,7 @@ export default function HeroSection() {
 
       {/* Media Controls Pill (Cleanly positioned below navbar) */}
       <div
-        className="absolute top-[124px] md:top-[132px] right-4 md:right-8 z-20 flex items-center gap-2 bg-black/65 backdrop-blur-md p-1.5 rounded-full border border-white/20 shadow-xl"
+        className="absolute top-[120px] md:top-[132px] right-3 sm:right-6 md:right-8 z-20 flex items-center gap-1.5 sm:gap-2 bg-black/70 backdrop-blur-md p-1 sm:p-1.5 rounded-full border border-white/20 shadow-xl scale-90 sm:scale-100 origin-right"
       >
         {/* Mode Switcher */}
         <button

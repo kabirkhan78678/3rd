@@ -25,7 +25,7 @@ export default function VIPClubSection() {
             overflow: "hidden",
             borderRadius: "var(--radius-sm)",
           }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center p-8 sm:p-12 lg:p-16"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center p-5 sm:p-10 lg:p-16"
         >
           {/* Background Text watermark */}
           <span

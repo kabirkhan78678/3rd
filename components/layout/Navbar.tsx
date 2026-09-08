@@ -9,6 +9,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useUI } from "@/context/UIContext";
 import { useAuth } from "@/context/AuthContext";
 import AnnouncementBar from "./AnnouncementBar";
+import MobileAccountSheet from "./MobileAccountSheet";
 import { mobileMenu, overlayFade, staggerContainer, fadeUp } from "@/lib/animations";
 
 const NAV_LINKS = [
@@ -49,6 +50,7 @@ export default function Navbar() {
 
   const [scrolled, setScrolled] = useState(false);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [mobileAccountOpen, setMobileAccountOpen] = useState(false);
   const accountRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -532,6 +534,78 @@ export default function Navbar() {
                 </AnimatePresence>
               </div>
 
+              {/* Mobile Profile / Login Button */}
+              <motion.button
+                whileHover={{ scale: 1.08 }}
+                whileTap={{ scale: 0.92 }}
+                onClick={() => {
+                  if (user) {
+                    setMobileAccountOpen(true);
+                  } else {
+                    openAuthModal("login");
+                  }
+                }}
+                aria-label={user ? `Account (${user.name})` : "Sign In"}
+                className="flex md:hidden items-center"
+                style={{
+                  background: "none",
+                  border: "none",
+                  padding: "6px",
+                  cursor: "pointer",
+                  color: navTextColor,
+                }}
+              >
+                {user ? (
+                  <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                    <div
+                      style={{
+                        width: 28,
+                        height: 28,
+                        borderRadius: "50%",
+                        background: "var(--color-accent)",
+                        color: "#000",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 11,
+                        fontWeight: 900,
+                        boxShadow: "0 0 10px rgba(181, 240, 0, 0.4)",
+                      }}
+                    >
+                      {getUserInitials(user.name)}
+                    </div>
+                    <span
+                      style={{
+                        position: "absolute",
+                        bottom: -1,
+                        right: -1,
+                        width: 7,
+                        height: 7,
+                        borderRadius: "50%",
+                        background: "#00ff88",
+                        border: "1.5px solid #000",
+                        boxShadow: "0 0 4px #00ff88",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 4,
+                      padding: "4px 8px",
+                      borderRadius: 999,
+                      background: isDarkHero ? "rgba(255,255,255,0.12)" : "rgba(0,0,0,0.06)",
+                      border: isDarkHero ? "1px solid rgba(255,255,255,0.22)" : "1px solid rgba(0,0,0,0.12)",
+                    }}
+                  >
+                    <User size={13} strokeWidth={2.2} />
+                    <span style={{ fontSize: 10, fontWeight: 900, letterSpacing: "0.04em" }}>LOGIN</span>
+                  </div>
+                )}
+              </motion.button>
+
               {/* Wishlist */}
               <motion.button
                 whileHover={{ scale: 1.08 }}
@@ -658,9 +732,9 @@ export default function Navbar() {
               style={{
                 position: "fixed",
                 inset: 0,
-                background: "rgba(0,0,0,0.6)",
-                backdropFilter: "blur(4px)",
-                zIndex: 90,
+                background: "rgba(0,0,0,0.7)",
+                backdropFilter: "blur(6px)",
+                zIndex: 150,
               }}
             />
             <motion.div
@@ -669,7 +743,7 @@ export default function Navbar() {
               animate="visible"
               exit="exit"
               className="mobile-menu"
-              style={{ zIndex: 95, display: "flex", flexDirection: "column" }}
+              style={{ zIndex: 160, display: "flex", flexDirection: "column" }}
             >
               {/* Header */}
               <div
@@ -906,6 +980,12 @@ export default function Navbar() {
           </>
         )}
       </AnimatePresence>
+
+      {/* Mobile Account Bottom Sheet */}
+      <MobileAccountSheet
+        isOpen={mobileAccountOpen}
+        onClose={() => setMobileAccountOpen(false)}
+      />
     </>
   );
 }
