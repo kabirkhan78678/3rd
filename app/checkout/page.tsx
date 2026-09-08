@@ -186,7 +186,7 @@ export default function CheckoutPage() {
               alignItems: "center",
               justifyContent: "center",
               margin: "0 auto 24px",
-              boxShadow: "0 0 30px rgba(181, 240, 0, 0.4)",
+              boxShadow: "0 0 30px var(--color-accent-glow, rgba(0, 194, 203, 0.4))",
             }}
           >
             <Check size={40} color="#000000" strokeWidth={3} />
@@ -563,7 +563,7 @@ export default function CheckoutPage() {
               </span>
 
               {appliedCoupon ? (
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(181, 240, 0, 0.12)", border: "1px solid var(--color-accent)", padding: "10px 14px", borderRadius: "var(--radius-sm)" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "var(--color-accent-subtle, rgba(0, 194, 203, 0.12))", border: "1px solid var(--color-accent)", padding: "10px 14px", borderRadius: "var(--radius-sm)" }}>
                   <div>
                     <span style={{ fontSize: 12, fontWeight: 800, color: "var(--color-text)", display: "block" }}>
                       Coupon: {appliedCoupon.code}

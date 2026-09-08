@@ -140,7 +140,7 @@ function TrackOrderContent() {
                   <h3 style={{ fontSize: 18, fontWeight: 800 }}>Order #{activeOrder.id}</h3>
                   <span
                     style={{
-                      background: "rgba(181, 240, 0, 0.15)",
+                      background: "var(--color-accent-subtle, rgba(0, 194, 203, 0.15))",
                       color: "var(--color-accent)",
                       border: "1px solid var(--color-accent)",
                       borderRadius: 999,
@@ -270,7 +270,7 @@ function TrackOrderContent() {
                           alignItems: "center",
                           justifyContent: "center",
                           marginBottom: 10,
-                          boxShadow: st.active ? "0 0 16px rgba(181,240,0,0.5)" : "none",
+                          boxShadow: st.active ? "0 0 16px var(--color-accent-glow, rgba(0, 194, 203, 0.5))" : "none",
                         }}
                       >
                         {st.done ? (

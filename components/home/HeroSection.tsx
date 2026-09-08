@@ -295,7 +295,7 @@ export default function HeroSection() {
               style={{
                 color: "var(--color-accent)",
                 WebkitTextStroke: "1px var(--color-accent)",
-                filter: "drop-shadow(0 0 20px rgba(181,240,0,0.4))",
+                filter: "drop-shadow(0 0 20px var(--color-accent-glow, rgba(0, 194, 203, 0.4)))",
               }}
             >
               YOUR
@@ -334,7 +334,7 @@ export default function HeroSection() {
                 fontSize: 13,
                 fontWeight: 800,
                 letterSpacing: "0.1em",
-                boxShadow: "0 8px 30px rgba(181,240,0,0.35)",
+                boxShadow: "0 8px 30px var(--color-accent-glow, rgba(0, 194, 203, 0.35))",
               }}
             >
               Shop Collection <ArrowRight size={18} />

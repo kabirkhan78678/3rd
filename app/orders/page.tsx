@@ -156,7 +156,7 @@ export default function OrdersPage() {
                         background:
                           order.status === "Delivered"
                             ? "rgba(40, 167, 69, 0.12)"
-                            : "rgba(181, 240, 0, 0.18)",
+                            : "var(--color-accent-subtle, rgba(0, 194, 203, 0.18))",
                         color: order.status === "Delivered" ? "#28a745" : "var(--color-text)",
                         border: `1px solid ${order.status === "Delivered" ? "#28a745" : "var(--color-accent)"}`,
                       }}

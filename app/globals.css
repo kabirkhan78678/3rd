@@ -16,9 +16,9 @@
   /* Brand */
   --color-primary: #0a0a0a;        /* Near-black */
   --color-secondary: #1a1a1a;      /* Dark charcoal */
-  --color-accent: #b5f000;         /* Electric lime */
-  --color-accent-hover: #9fd800;   /* Lime hover */
-  --color-accent-2: #ff3b5c;       /* Hot pink accent */
+  --color-accent: #00c2cb;         /* Aqua blue */
+  --color-accent-hover: #00a3ab;   /* Aqua hover */
+  --color-accent-2: #ff4d6d;       /* Coral punch accent */
   --color-accent-dark: #0a0a0a;
 
   /* UI */
@@ -180,7 +180,7 @@ button { cursor: pointer; font-family: inherit; }
   width: 80px;
   height: 80px;
   border-color: var(--color-accent);
-  background: rgba(181, 240, 0, 0.08);
+  background: var(--color-accent-subtle, rgba(0, 194, 203, 0.1));
 }
 
 /* ─────────────────────────────────────────────

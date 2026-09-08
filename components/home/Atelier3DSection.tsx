@@ -10,7 +10,7 @@ import { slideInLeft, slideInRight, VIEWPORT_ONCE } from "@/lib/animations";
 import { environment } from "@/environment";
 
 function cleanHex(c: string): string {
-  if (!c) return "#b5f000";
+  if (!c) return environment.colors.accent || "#00c2cb";
   const str = c.trim();
   if (str.startsWith("#") && str.length === 9) {
     return str.slice(0, 7);

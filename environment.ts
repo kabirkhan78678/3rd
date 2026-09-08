@@ -139,12 +139,26 @@ export const environment: EnvironmentConfig = {
 
 };
 
+function hexToRgb(hex: string): string {
+  let clean = hex.replace("#", "").trim();
+  if (clean.length === 3) {
+    clean = clean.split("").map((c) => c + c).join("");
+  }
+  const num = parseInt(clean, 16);
+  if (isNaN(num)) return "0, 194, 203";
+  const r = (num >> 16) & 255;
+  const g = (num >> 8) & 255;
+  const b = num & 255;
+  return `${r}, ${g}, ${b}`;
+}
+
 /**
  * Generates the CSS `:root` variables string from the active environment.
  * Injected automatically into the layout `<head>` to override default tokens.
  */
 export function getCssThemeVariables(colors: ThemeColors = environment.colors): string {
   const accent = colors.accent;
+  const accentRgb = hexToRgb(accent);
   const accentHover = colors.accentHover || accent;
   const accentSecondary = colors.accentSecondary || "#ff3b5c";
   const primary = colors.primary || "#0a0a0a";
@@ -161,7 +175,10 @@ export function getCssThemeVariables(colors: ThemeColors = environment.colors): 
   return `
     :root {
       --color-accent: ${accent} !important;
+      --color-accent-rgb: ${accentRgb} !important;
       --color-accent-hover: ${accentHover} !important;
+      --color-accent-subtle: rgba(${accentRgb}, 0.12) !important;
+      --color-accent-glow: rgba(${accentRgb}, 0.35) !important;
       --color-accent-2: ${accentSecondary} !important;
       --color-primary: ${primary} !important;
       --color-secondary: ${secondary} !important;

@@ -323,7 +323,7 @@ export default function AuthModal() {
                 style={{
                   width: "100%",
                   padding: "10px 14px",
-                  background: "rgba(181, 240, 0, 0.1)",
+                  background: "var(--color-accent-subtle, rgba(0, 194, 203, 0.1))",
                   border: "1.5px solid var(--color-accent)",
                   borderRadius: "var(--radius-sm)",
                   color: "var(--color-text)",

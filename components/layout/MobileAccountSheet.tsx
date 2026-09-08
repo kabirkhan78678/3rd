@@ -131,7 +131,7 @@ export default function MobileAccountSheet({ isOpen, onClose }: MobileAccountShe
                   fontSize: 18,
                   fontWeight: 900,
                   flexShrink: 0,
-                  boxShadow: "0 0 20px rgba(181,240,0,0.4)",
+                  boxShadow: "0 0 20px var(--color-accent-glow, rgba(0, 194, 203, 0.4))",
                 }}
               >
                 {getUserInitials(user.name)}
@@ -152,7 +152,7 @@ export default function MobileAccountSheet({ isOpen, onClose }: MobileAccountShe
                       fontWeight: 900,
                       textTransform: "uppercase",
                       padding: "2px 8px",
-                      background: "rgba(181,240,0,0.15)",
+                      background: "var(--color-accent-subtle, rgba(0, 194, 203, 0.15))",
                       border: "1px solid var(--color-accent)",
                       color: "var(--color-accent)",
                       borderRadius: 4,

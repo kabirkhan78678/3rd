@@ -403,7 +403,7 @@ export default function Navbar() {
                             fontSize: 14,
                             fontWeight: 900,
                             flexShrink: 0,
-                            boxShadow: "0 0 16px rgba(181, 240, 0, 0.35)",
+                            boxShadow: "0 0 16px var(--color-accent-glow, rgba(0, 194, 203, 0.35))",
                           }}
                         >
                           {getUserInitials(user.name)}
@@ -607,7 +607,7 @@ export default function Navbar() {
                         justifyContent: "center",
                         fontSize: 11,
                         fontWeight: 900,
-                        boxShadow: "0 0 10px rgba(181, 240, 0, 0.4)",
+                        boxShadow: "0 0 10px var(--color-accent-glow, rgba(0, 194, 203, 0.4))",
                       }}
                     >
                       {getUserInitials(user.name)}
@@ -831,7 +831,7 @@ export default function Navbar() {
                             justifyContent: "center",
                             fontSize: 14,
                             fontWeight: 900,
-                            boxShadow: "0 0 12px rgba(181, 240, 0, 0.3)",
+                            boxShadow: "0 0 12px var(--color-accent-glow, rgba(0, 194, 203, 0.3))",
                           }}
                         >
                           {getUserInitials(user.name)}

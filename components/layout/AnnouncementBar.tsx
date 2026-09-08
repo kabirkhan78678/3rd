@@ -81,7 +81,7 @@ export default function AnnouncementBar() {
         <button
           onClick={copyCurrentCode}
           style={{
-            background: "rgba(181, 240, 0, 0.15)",
+            background: "var(--color-accent-subtle, rgba(0, 194, 203, 0.15))",
             border: "1px solid var(--color-accent)",
             color: "var(--color-accent)",
             borderRadius: 999,

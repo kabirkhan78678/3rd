@@ -149,7 +149,7 @@ export default function MobileBottomNav() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    boxShadow: "0 0 8px rgba(181, 240, 0, 0.5)",
+                    boxShadow: "0 0 8px var(--color-accent-glow, rgba(0, 194, 203, 0.5))",
                   }}
                 >
                   {itemCount}
@@ -236,7 +236,7 @@ export default function MobileBottomNav() {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    boxShadow: "0 0 8px rgba(181,240,0,0.4)",
+                    boxShadow: "0 0 8px var(--color-accent-glow, rgba(0, 194, 203, 0.4))",
                   }}
                 >
                   {getUserInitials(user.name)}
