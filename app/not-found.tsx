@@ -7,6 +7,7 @@ import { Float, MeshDistortMaterial } from "@react-three/drei";
 import { useRef } from "react";
 import * as THREE from "three";
 import { staggerContainer, fadeUp } from "@/lib/animations";
+import { environment } from "@/environment";
 
 function NotFoundScene() {
   const mesh = useRef<THREE.Mesh>(null);
@@ -21,11 +22,11 @@ function NotFoundScene() {
       <Float speed={1.5} floatIntensity={0.8}>
         <mesh ref={mesh}>
           <torusKnotGeometry args={[1.2, 0.35, 200, 20]} />
-          <MeshDistortMaterial color="#b5f000" distort={0.3} speed={2} roughness={0.1} metalness={0.9} />
+          <MeshDistortMaterial color={environment.colors.accent} distort={0.3} speed={2} roughness={0.1} metalness={0.9} />
         </mesh>
       </Float>
       <ambientLight intensity={0.5} />
-      <pointLight position={[3, 3, 3]} intensity={2} color="#b5f000" />
+      <pointLight position={[3, 3, 3]} intensity={2} color={environment.colors.accent} />
       <pointLight position={[-3, -3, 2]} intensity={1} color="#ffffff" />
     </>
   );

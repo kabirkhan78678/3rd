@@ -26,9 +26,10 @@ import * as THREE from "three";
 import ProductCard from "@/components/product/ProductCard";
 import { products, getFeaturedProducts, getBestSellers, getNewArrivals, Product } from "@/data/products";
 import { staggerContainer, fadeUp, slideInLeft, slideInRight, VIEWPORT_ONCE } from "@/lib/animations";
+import { environment } from "@/environment";
 
 // ─── 3D Vault Object (In Dedicated Interactive Lab) ──────────────────────────
-function VaultObject({ color = "#b5f000", distort = 0.4 }: { color?: string; distort?: number }) {
+function VaultObject({ color = environment.colors.accent, distort = 0.4 }: { color?: string; distort?: number }) {
   const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((_, delta) => {
@@ -164,7 +165,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState<"all" | "men" | "women" | "bestseller">("all");
 
   // 3D Vault interactive state
-  const [vaultColor, setVaultColor] = useState("#b5f000");
+  const [vaultColor, setVaultColor] = useState(environment.colors.accent);
   const [vaultDistort, setVaultDistort] = useState(0.4);
 
   // Scroll parallax for hero
